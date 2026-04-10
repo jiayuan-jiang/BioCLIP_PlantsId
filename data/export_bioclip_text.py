@@ -17,7 +17,7 @@ from bioclip import TreeOfLifeClassifier
 # ══════════════════════════════════════════════
 
 OUTPUT_NPZ   = "bioclip_full_index.npz"
-ONLY_PLANTS  = False   # True = 只保留 Plantae，False = 保留全部 867455 个物种
+ONLY_PLANTS  = True  # True = 只保留 Plantae，False = 保留全部 867455 个物种
 
 # ══════════════════════════════════════════════
 
