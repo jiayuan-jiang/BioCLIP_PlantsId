@@ -1,2 +1,14 @@
-test_images/
+# System
+.DS_Store
 
+# Model weights
+data/weights/
+
+# Test images
+data/test_images/
+
+# Large vector indices (>1GB)
+data/bioclip_full_index.npz
+
+# Test scripts
+model_test.py

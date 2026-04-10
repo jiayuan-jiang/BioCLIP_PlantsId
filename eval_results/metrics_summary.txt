@@ -1,0 +1,15 @@
+BioCLIP 2 Zero-shot Evaluation Summary
+=============================================
+Images evaluated : 20,000
+Species covered  : 4,000
+
+Top-1 Accuracy   : 84.280%
+Top-3 Accuracy   : 93.175%
+Top-5 Accuracy   : 94.805%
+Macro AUC        : 0.99785
+
+Per-species Top-1 Accuracy:
+  Mean   : 84.280%
+  Median : 100.000%
+  Min    : 0.000%
+  Max    : 100.000%
