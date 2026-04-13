@@ -10,5 +10,9 @@ data/test_images/
 # Large vector indices (>1GB)
 data/bioclip_full_index.npz
 
+# Demo — 运行时数据（需手动 cp，不入库）
+demo/bioclip_full_index.npz
+demo/weights/
+
 # Test scripts
 model_test.py

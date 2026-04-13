@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioCLIP 2 — 生物图像识别</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f1117;
+      color: #e8eaf0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    header h1 span { color: #4ade80; }
+    header p {
+      margin-top: 8px;
+      color: #9ca3af;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: #1c1f2e;
+      border: 1px solid #2d3148;
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    /* ── 上传区 ── */
+    #drop-zone {
+      border: 2px dashed #374151;
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    #drop-zone.over {
+      border-color: #4ade80;
+      background: rgba(74, 222, 128, 0.05);
+    }
+    #drop-zone svg { color: #6b7280; margin-bottom: 12px; }
+    #drop-zone p { color: #9ca3af; font-size: 0.9rem; }
+    #drop-zone p strong { color: #d1d5db; }
+    #file-input { display: none; }
+
+    /* ── 预览 ── */
+    #preview-wrap {
+      display: none;
+      margin-top: 20px;
+      position: relative;
+    }
+    #preview-wrap img {
+      width: 100%;
+      max-height: 320px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #111827;
+    }
+    #clear-btn {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: rgba(0,0,0,0.6);
+      border: none;
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1rem;
+      line-height: 28px;
+      text-align: center;
+    }
+
+    /* ── 控制 ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    label[for="topk"] { color: #9ca3af; font-size: 0.85rem; white-space: nowrap; }
+    #topk {
+      width: 60px;
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      color: #e8eaf0;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+    }
+    #submit-btn {
+      flex: 1;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #submit-btn:hover:not(:disabled) { background: #15803d; }
+    #submit-btn:disabled { background: #374151; cursor: not-allowed; }
+
+    /* ── 加载 ── */
+    #spinner {
+      display: none;
+      text-align: center;
+      margin-top: 24px;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .dot-anim::after {
+      content: '';
+      animation: dots 1.4s infinite;
+    }
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    /* ── 结果 ── */
+    #results { margin-top: 28px; }
+    #results h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #9ca3af;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .result-item {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .result-item.rank-1 { border-color: #16a34a44; background: #052e1644; }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .rank-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #6b7280;
+      min-width: 24px;
+    }
+    .rank-1 .rank-badge { color: #4ade80; }
+    .sci-name {
+      font-style: italic;
+      font-size: 1rem;
+      font-weight: 600;
+      flex: 1;
+      color: #f0fdf4;
+    }
+    .conf-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .conf-high   { background: #14532d; color: #4ade80; }
+    .conf-medium { background: #451a03; color: #fb923c; }
+    .conf-low    { background: #1f1f1f; color: #6b7280; }
+
+    .sim-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .sim-bar-bg {
+      flex: 1;
+      height: 4px;
+      background: #1f2937;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .sim-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: #4ade80;
+      transition: width 0.4s ease;
+    }
+    .conf-medium .sim-bar-fill, .result-item:not(.rank-1) .sim-bar-fill { background: #22c55e; }
+    .sim-pct { font-size: 0.8rem; color: #9ca3af; min-width: 42px; text-align: right; }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: 4px;
+    }
+    .meta-item {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+    .meta-item span { color: #d1d5db; }
+
+    /* ── 错误 ── */
+    #error-box {
+      display: none;
+      margin-top: 20px;
+      background: #450a0a;
+      border: 1px solid #991b1b;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #fca5a5;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>BioCLIP <span>2</span></h1>
+  <p>生物图像识别 · 上传照片，识别植物 / 动物物种</p>
+</header>
+
+<div class="card">
+  <!-- 上传区 -->
+  <div id="drop-zone">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none"
+         viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5
+               m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+    </svg>
+    <p><strong>点击上传</strong>或将图片拖拽到此处</p>
+    <p style="margin-top:6px;font-size:0.8rem;">支持 JPG · PNG · WebP · HEIC</p>
+    <input type="file" id="file-input" accept="image/*" />
+  </div>
+
+  <!-- 预览 -->
+  <div id="preview-wrap">
+    <img id="preview-img" src="" alt="预览" />
+    <button id="clear-btn" title="清除">✕</button>
+  </div>
+
+  <!-- 控制 -->
+  <div class="controls">
+    <label for="topk">Top‑K</label>
+    <input type="number" id="topk" value="5" min="1" max="20" />
+    <button id="submit-btn" disabled>识别</button>
+  </div>
+
+  <!-- 加载 -->
+  <div id="spinner">
+    <span class="dot-anim">识别中</span>
+  </div>
+
+  <!-- 错误 -->
+  <div id="error-box"></div>
+
+  <!-- 结果 -->
+  <div id="results"></div>
+</div>
+
+<script>
+  const dropZone   = document.getElementById('drop-zone');
+  const fileInput  = document.getElementById('file-input');
+  const previewWrap = document.getElementById('preview-wrap');
+  const previewImg = document.getElementById('preview-img');
+  const clearBtn   = document.getElementById('clear-btn');
+  const submitBtn  = document.getElementById('submit-btn');
+  const spinner    = document.getElementById('spinner');
+  const errorBox   = document.getElementById('error-box');
+  const resultsDiv = document.getElementById('results');
+  const topkInput  = document.getElementById('topk');
+
+  let selectedFile = null;
+
+  // ── 拖拽 ──
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('over');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) setFile(f);
+  });
+  dropZone.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) setFile(fileInput.files[0]);
+  });
+
+  function setFile(file) {
+    selectedFile = file;
+    const url = URL.createObjectURL(file);
+    previewImg.src = url;
+    previewWrap.style.display = 'block';
+    submitBtn.disabled = false;
+    clearResults();
+  }
+
+  clearBtn.addEventListener('click', () => {
+    selectedFile = null;
+    previewImg.src = '';
+    previewWrap.style.display = 'none';
+    submitBtn.disabled = true;
+    fileInput.value = '';
+    clearResults();
+  });
+
+  function clearResults() {
+    resultsDiv.innerHTML = '';
+    errorBox.style.display = 'none';
+  }
+
+  // ── 提交 ──
+  submitBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+    clearResults();
+    spinner.style.display = 'block';
+    submitBtn.disabled = true;
+
+    const fd = new FormData();
+    fd.append('file', selectedFile);
+
+    try {
+      const topk = parseInt(topkInput.value) || 5;
+      const res = await fetch(`/predict?topk=${topk}`, { method: 'POST', body: fd });
+
+      // 先拿原始文本，避免非 JSON 响应时 .json() 直接抛错
+      const text = await res.text();
+
+      if (!res.ok) {
+        let detail = `服务器错误 HTTP ${res.status}`;
+        try { detail = JSON.parse(text).detail || detail; } catch {}
+        showError(detail);
+        return;
+      }
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        showError('服务器返回了无效的响应（非 JSON），请查看终端日志');
+        return;
+      }
+
+      renderResults(data.results);
+    } catch (e) {
+      showError(`请求失败：${e.message}`);
+    } finally {
+      spinner.style.display = 'none';
+      submitBtn.disabled = false;
+    }
+  });
+
+  function showError(msg) {
+    errorBox.textContent = `⚠ ${msg}`;
+    errorBox.style.display = 'block';
+  }
+
+  function renderResults(results) {
+    if (!results || results.length === 0) {
+      resultsDiv.innerHTML = '<p style="color:#6b7280;font-size:.9rem;">无结果</p>';
+      return;
+    }
+
+    const confLabel = { high: '高置信度', medium: '中置信度', low: '低置信度' };
+    const metaKeys = [
+      ['common_names', '常用名'],
+      ['taxon_paths',  '分类路径'],
+      ['genera',       '属'],
+      ['families',     '科'],
+      ['kingdoms',     '界'],
+      ['taxon_ids',    'Taxon ID'],
+    ];
+
+    let html = '<h2>识别结果</h2>';
+    for (const r of results) {
+      const isTop = r.rank === 1;
+      const conf = r.confidence || 'low';
+      // 相似度条：把 sim_pct 映射到 0-100% 视觉宽度（以 50% 为满格参考）
+      const barW = Math.min(100, (r.similarity_pct / 50) * 100).toFixed(1);
+
+      const sciName = r.sci_names || r.scientific_name || '未知物种';
+
+      let metaHtml = '';
+      for (const [key, label] of metaKeys) {
+        const val = r[key];
+        if (val && String(val) !== 'null') {
+          metaHtml += `<div class="meta-item">${label}：<span>${val}</span></div>`;
+        }
+      }
+
+      html += `
+        <div class="result-item ${isTop ? 'rank-1' : ''}">
+          <div class="result-header">
+            <span class="rank-badge">#${r.rank}</span>
+            <span class="sci-name">${sciName}</span>
+            <span class="conf-badge conf-${conf}">${confLabel[conf]}</span>
+          </div>
+          <div class="sim-bar-wrap">
+            <div class="sim-bar-bg">
+              <div class="sim-bar-fill" style="width:${barW}%"></div>
+            </div>
+            <span class="sim-pct">${r.similarity_pct}%</span>
+          </div>
+          ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
+        </div>`;
+    }
+
+    resultsDiv.innerHTML = html;
+  }
+</script>
+</body>
+</html>
