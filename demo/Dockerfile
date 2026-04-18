@@ -1,21 +1,12 @@
-FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04
+FROM pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    PYTHONUNBUFFERED=1
-
-# 安装 Python 3.11
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        python3.11 python3.11-dev python3-pip && \
-    rm -rf /var/lib/apt/lists/*
-
-# 先装 CUDA 版 torch；requirements.txt 里 torch>=2.2.0 已满足，pip 不会覆盖
-RUN pip3 install --no-cache-dir \
-    "torch>=2.2.0" --index-url https://download.pytorch.org/whl/cu121
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
+# torch 已内置于基础镜像，pip 安装其余依赖时会直接跳过 torch
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 代码 & 静态资源
 COPY inference_core.py inference.py handler.py ./
@@ -27,4 +18,4 @@ COPY bioclip_full_index.npz .
 
 EXPOSE 8000
 
-CMD ["python3.11", "handler.py"]
+CMD ["python", "handler.py"]
