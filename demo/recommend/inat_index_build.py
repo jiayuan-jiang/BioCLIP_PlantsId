@@ -1,4 +1,4 @@
-"""iNat v1 参考索引构建（3060）。读 manifest + 已下载的图 →
+r"""iNat v1 参考索引构建（3060）。读 manifest + 已下载的图 →
 两视图 TTA avg(full,cc60) emb + p_organ + quality + dhash + 物种文本原型。
 
 用法（3060）：
@@ -32,7 +32,7 @@ os.makedirs(A.out, exist_ok=True)
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get("BIOCLIP_ROOT") or os.path.normpath(os.path.join(HERE, "..", ".."))
 LOCAL_W = os.path.join(ROOT, "demo", "weights", "open_clip_model.safetensors")
-TAG = np.load(os.path.join(HERE, "organ_tagger_tta.npz"), allow_pickle=True)
+TAG = np.load(os.path.join(HERE, "organ_heads.npz"), allow_pickle=True)
 CLS = list(TAG["classes"]); COEF = TAG["coef"].astype(np.float32); ICPT = TAG["intercept"].astype(np.float32)
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

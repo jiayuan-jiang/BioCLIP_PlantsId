@@ -1,4 +1,4 @@
-"""iNat Open Data 元数据 → 抽 top-20k 植物种 × ≤100 张的下载清单。
+r"""iNat Open Data 元数据 → 抽 top-20k 植物种 × ≤100 张的下载清单。
 
 前置：下好并解开元数据（在 --meta 目录里应有 photos.csv.gz / observations.csv.gz /
 taxa.csv.gz / observers.csv.gz）：

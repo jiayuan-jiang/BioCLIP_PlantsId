@@ -1,4 +1,4 @@
-"""按 manifest 并行下载 iNat medium 图。跳过已存在，断点续传安全。
+r"""按 manifest 并行下载 iNat medium 图。跳过已存在，断点续传安全。
 
 用法：
   pip install httpx pyarrow tqdm

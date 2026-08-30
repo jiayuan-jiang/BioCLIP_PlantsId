@@ -19,8 +19,8 @@ pip install open_clip_torch pillow numpy pyarrow httpx tqdm duckdb
 # aws cli: https://aws.amazon.com/cli/   （或用 curl 直接下 tar）
 git -C <repo> fetch && git -C <repo> checkout tta-study
 ```
-把 `eval_harness/organ_probe/organ_tagger_tta.npz`（~26KB）拷到 3060 的同目录（gitignored，U 盘带）。
-`demo/weights/open_clip_model.safetensors` 也要在 `<BIOCLIP_ROOT>/demo/weights/`。
+`demo/recommend/organ_heads.npz`（4 个 sigmoid 头，~26KB）已入库，`git pull` 即得。
+`demo/weights/open_clip_model.safetensors` 要在 `<BIOCLIP_ROOT>/demo/weights/`（TTA 那次已拷到 3060）。
 
 ---
 
@@ -33,7 +33,7 @@ aws s3 cp --no-sign-request s3://inaturalist-open-data/metadata/inaturalist-open
 tar xzf inaturalist-open-data-latest.tar.gz          # 出 photos.csv.gz / observations.csv.gz / taxa.csv.gz / observers.csv.gz
 mkdir metadata && move *.csv.gz metadata\
 
-python <repo>\eval_harness\organ_probe\inat_manifest.py ^
+python demo\recommend\inat_manifest.py ^
     --meta D:\inat\metadata --out D:\inat\manifest.parquet ^
     --n-species 20000 --per-species 100
 ```
@@ -46,7 +46,7 @@ python <repo>\eval_harness\organ_probe\inat_manifest.py ^
 ## 2. 下载图（~120GB，可断点续传）
 
 ```powershell
-python <repo>\eval_harness\organ_probe\inat_download.py ^
+python demo\recommend\inat_download.py ^
     --manifest D:\inat\manifest.parquet --out D:\inat\img --workers 64
 ```
 - 存 `D:\inat\img\{taxon_id}\{photo_id}.jpg`，跳过已存在
@@ -60,11 +60,11 @@ python <repo>\eval_harness\organ_probe\inat_download.py ^
 
 ```powershell
 set BIOCLIP_ROOT=D:\BioCLIP
-python <repo>\eval_harness\organ_probe\inat_index_build.py ^
+python demo\recommend\inat_index_build.py ^
     --manifest D:\inat\manifest.parquet --img D:\inat\img ^
     --out D:\inat\index --prune
 ```
-- 两视图 TTA `avg(full,cc60)` + `p_organ`(organ_tagger_tta) + quality + dHash + 20k 物种原型
+- 两视图 TTA `avg(full,cc60)` + `p_organ`(organ_heads) + quality + dHash + 20k 物种原型
 - `--prune`：编码后每种保留 `{p_bark>0.5 ∪ p_fruit>0.5} ∪ {quality top 50}` → 索引降 ~30–40%
 - 200万 × 2 视图 ≈ 400万 forward：3060 fp16 **~9–14h（过夜）**
 - 产出：`inat_pool.npz`（prune 后 ~1–1.3M 张，~2–2.6GB）+ `inat_species_proto.npz`
@@ -76,19 +76,19 @@ python <repo>\eval_harness\organ_probe\inat_index_build.py ^
 ```powershell
 croc send D:\inat\index\inat_pool.npz D:\inat\index\inat_species_proto.npz
 ```
-Mac：`croc <口令>` → `eval_harness/organ_probe/`
+Mac：`croc <口令>` → `demo/recommend/`
 
 ---
 
 ## 5. Mac 上验证 + 定权重
 
 ```bash
-python eval_harness/organ_probe/global_retrieval_eval.py \
-    --pool eval_harness/organ_probe/inat_pool.npz --proto eval_harness/organ_probe/inat_species_proto.npz
+python demo/recommend/retrieval_eval.py \
+    --pool demo/recommend/inat_pool.npz --proto demo/recommend/inat_species_proto.npz
 # 看 a/b/c sweep：purity@5 / rank1=S / swap:useful / swap:genus → 定 recommend.py 的 A/B/C
 
-python eval_harness/organ_probe/recommend.py \
-    --pool eval_harness/organ_probe/inat_pool.npz --proto eval_harness/organ_probe/inat_species_proto.npz \
+python demo/recommend/recommend.py \
+    --pool demo/recommend/inat_pool.npz --proto demo/recommend/inat_species_proto.npz \
     --species "Acer rubrum"
 ```
 （v1 索引里没有本地图片，`--visualize` 不可用；结果带 iNat URL，浏览器看。）

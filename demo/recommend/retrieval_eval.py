@@ -3,7 +3,7 @@ quality 乘数导致的跨物种替换是有用还是有害，扫 a/b/c 权重�
 
 score(photo) = cos(q_S, emb)^a · p_organ[P]^b · quality^c   →  对全池排序取 top-k
 
-用法：python global_retrieval_eval.py   （需 global_pool.npz + global_species_proto.npz）
+用法：python retrieval_eval.py   （需 inat_pool.npz + inat_species_proto.npz）
 """
 import os, argparse
 os.environ.setdefault("OMP_NUM_THREADS", "4")
@@ -11,8 +11,8 @@ import numpy as np
 
 H = os.path.dirname(os.path.abspath(__file__))
 ap = argparse.ArgumentParser()
-ap.add_argument("--pool", default=os.path.join(H, "global_pool.npz"))
-ap.add_argument("--proto", default=os.path.join(H, "global_species_proto.npz"))
+ap.add_argument("--pool", default=os.path.join(H, "inat_pool.npz"))
+ap.add_argument("--proto", default=os.path.join(H, "inat_species_proto.npz"))
 ARG = ap.parse_args()
 P = np.load(ARG.pool, allow_pickle=True)
 SP = np.load(ARG.proto, allow_pickle=True)
