@@ -1,13 +1,15 @@
 # iNat v1 参考索引 —— 操作 spec（全在 Windows / 3060）
 
 目标：iNat Open Data top 20k 植物种 × flat 100 张 → 全局检索索引。
-分支 `tta-study`。Claude 没权限碰 U 盘 / Windows，全程你跑。
+Claude 没权限碰 U 盘 / Windows，全程你（或交付 agent）跑。
 
 产物链：
 ```
 元数据 tar (~15GB)  →  manifest.parquet (~200万行)  →  下载 ~120GB 图  →
-  inat_pool.npz (~3GB) + inat_species_proto.npz (~30MB)  →  拷回 Mac / 上服务器
+  inat_pool.npz (~2.6GB) + inat_species_proto.npz (~30MB)  →  拷回 Mac / 上服务器
 ```
+
+**这个 `recommend/` 文件夹是自足的**，脚本之间不依赖 repo 其它部分。`organ_heads.npz` 就在文件夹里。
 
 ---
 
@@ -15,12 +17,15 @@
 
 ```
 pip install torch --index-url https://download.pytorch.org/whl/cu121
-pip install open_clip_torch pillow numpy pyarrow httpx tqdm duckdb
+pip install open_clip_torch pillow numpy pyarrow httpx duckdb
 # aws cli: https://aws.amazon.com/cli/   （或用 curl 直接下 tar）
-git -C <repo> fetch && git -C <repo> checkout tta-study
 ```
-`demo/recommend/organ_heads.npz`（4 个 sigmoid 头，~26KB）已入库，`git pull` 即得。
-`demo/weights/open_clip_model.safetensors` 要在 `<BIOCLIP_ROOT>/demo/weights/`（TTA 那次已拷到 3060）。
+
+**BioCLIP 权重**，二选一：
+- 已有 `open_clip_model.safetensors` → 放成 `<某目录>/demo/weights/open_clip_model.safetensors`，跑第 3 步前 `set BIOCLIP_ROOT=<某目录>`。TTA 那次已拷到 3060。
+- 没有 / 嫌麻烦 → **什么都不设**，`inat_index_build.py` 自动从 HuggingFace 下 `imageomics/bioclip-2`（~1.7GB，需联网 + HF 缓存盘空间）。
+
+脚本路径下文写作 `recommend\<脚本>`（即这个文件夹）；若拷成别的名字自行替换。
 
 ---
 
@@ -33,20 +38,25 @@ aws s3 cp --no-sign-request s3://inaturalist-open-data/metadata/inaturalist-open
 tar xzf inaturalist-open-data-latest.tar.gz          # 出 photos.csv.gz / observations.csv.gz / taxa.csv.gz / observers.csv.gz
 mkdir metadata && move *.csv.gz metadata\
 
-python demo\recommend\inat_manifest.py ^
+# 先自检 schema（打印各 CSV 表头 + license 取值分布，不跑 join）
+python recommend\inat_manifest.py --meta D:\inat\metadata --out D:\inat\manifest.parquet --probe-only
+
+# 确认列名 / license 取值正常后，去掉 --probe-only 正式跑
+python recommend\inat_manifest.py ^
     --meta D:\inat\metadata --out D:\inat\manifest.parquet ^
     --n-species 20000 --per-species 100
 ```
 - DuckDB join，~15–30 min，需 ~12GB RAM + 临时磁盘
-- ⚠ 若报列名 / license 取值不对：`gzip -dc metadata\photos.csv.gz | head` 看真实表头，改 `inat_manifest.py` 里的 SQL
-- 输出末尾会打印总张数 + 预估下载 GB
+- 脚本**自动**做 schema 自检 + 列名兜底（`photo_id`/`observation_uuid`/… 找不到会明确报哪个 CSV 缺哪列）；license 匹配大小写不敏感、兼容 URL 形式，规则 = CC0 + CC-BY + CC-BY-NC（排除含 nd/sa 的）
+- 若 `① 植物种 0`：检查 `--plantae-id`（默认 47126）或 taxa.ancestry 格式
+- 输出末尾打印总张数 + 预估下载 GB + 最终 license 分布
 
 ---
 
 ## 2. 下载图（~120GB，可断点续传）
 
 ```powershell
-python demo\recommend\inat_download.py ^
+python recommend\inat_download.py ^
     --manifest D:\inat\manifest.parquet --out D:\inat\img --workers 64
 ```
 - 存 `D:\inat\img\{taxon_id}\{photo_id}.jpg`，跳过已存在
@@ -60,7 +70,7 @@ python demo\recommend\inat_download.py ^
 
 ```powershell
 set BIOCLIP_ROOT=D:\BioCLIP
-python demo\recommend\inat_index_build.py ^
+python recommend\inat_index_build.py ^
     --manifest D:\inat\manifest.parquet --img D:\inat\img ^
     --out D:\inat\index --prune
 ```
@@ -76,19 +86,19 @@ python demo\recommend\inat_index_build.py ^
 ```powershell
 croc send D:\inat\index\inat_pool.npz D:\inat\index\inat_species_proto.npz
 ```
-Mac：`croc <口令>` → `demo/recommend/`
+Mac：`croc <口令>` → `recommend/`
 
 ---
 
 ## 5. Mac 上验证 + 定权重
 
 ```bash
-python demo/recommend/retrieval_eval.py \
-    --pool demo/recommend/inat_pool.npz --proto demo/recommend/inat_species_proto.npz
+python recommend/retrieval_eval.py \
+    --pool recommend/inat_pool.npz --proto recommend/inat_species_proto.npz
 # 看 a/b/c sweep：purity@5 / rank1=S / swap:useful / swap:genus → 定 recommend.py 的 A/B/C
 
-python demo/recommend/recommend.py \
-    --pool demo/recommend/inat_pool.npz --proto demo/recommend/inat_species_proto.npz \
+python recommend/recommend.py \
+    --pool recommend/inat_pool.npz --proto recommend/inat_species_proto.npz \
     --species "Acer rubrum"
 ```
 （v1 索引里没有本地图片，`--visualize` 不可用；结果带 iNat URL，浏览器看。）
