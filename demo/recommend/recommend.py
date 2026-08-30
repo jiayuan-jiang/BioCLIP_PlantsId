@@ -16,8 +16,13 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# ── 权重（用 retrieval_eval.py 的 sweep 结果定；这里是占位默认）──
-A, B, C = 2.0, 2.0, 1.0
+# ── 权重（retrieval_eval.py sweep 定，global_pool 25000张/5000种）──
+#   a：cos 权重。1→2→3 每个指标单调上升，取上限 3。
+#   b：p_organ 权重。b=1 > 2 > 4（组织门控越重越伤物种保真度），取 1。
+#   c：quality 权重。c=0 保真度最高（rank1=S 0.26）；c=0.5 换来 swap:useful 0.57
+#      但 swap:genus 仅 0.15 —— quality 驱动的跨物种替换多半换成"更清晰但不同属"的照片。
+#      取 0.5 保留轻微清晰度微调，跨物种结果由 provenance 标注兜底。纯保真可设 0。
+A, B, C = 3.0, 1.0, 0.5
 MMR_LAMBDA = 0.5        # 1=纯相关，0=纯多样
 DEDUP_HAMMING = 6       # dHash 汉明距离 ≤ 此值视为重复
 

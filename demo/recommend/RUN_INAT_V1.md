@@ -13,6 +13,16 @@ Claude 没权限碰 U 盘 / Windows，全程你（或交付 agent）跑。
 
 ---
 
+## ⚠ 交付前必读（runbook 替不了的判断）
+
+1. **下载目标盘**：第 2 步 ~120GB 图，要 ~150GB 空闲。**下到内置 NVMe，不要下 exFAT U 盘**（U 盘盒是 USB 2.0，200 万小文件会 I/O 颠簸）。U 盘只放元数据 tar + manifest + 最终 npz。
+2. **权重**：3060 上若已有 `open_clip_model.safetensors`（TTA 那次拷过）→ 放成 `<X>/demo/weights/...` 并 `set BIOCLIP_ROOT=<X>`。没有就不设，`inat_index_build.py` 自动从 HF 下（~1.7GB，需联网）。
+3. **耗时正常，别当卡死**：下载几小时；**编码 9–14h（过夜）**；DuckDB join 15–30 min。
+4. **先冒烟再全量**：manifest 先 `--probe-only` 看 schema；下载先 `--limit 2000`；编码可先拿一个几千行的小 manifest 验证链路。
+5. **manifest SQL 是最脆的一环**：schema 自检会打印表头 + license 分布 + `① 植物种 N`。若植物种为 0 或列名报错，按打印结果调 `inat_manifest.py`。
+
+---
+
 ## 0. 环境（3060）
 
 ```
