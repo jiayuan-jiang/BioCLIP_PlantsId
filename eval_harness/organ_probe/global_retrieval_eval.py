@@ -5,13 +5,17 @@ score(photo) = cos(q_S, emb)^a · p_organ[P]^b · quality^c   →  对全池排�
 
 用法：python global_retrieval_eval.py   （需 global_pool.npz + global_species_proto.npz）
 """
-import os
+import os, argparse
 os.environ.setdefault("OMP_NUM_THREADS", "4")
 import numpy as np
 
 H = os.path.dirname(os.path.abspath(__file__))
-P = np.load(os.path.join(H, "global_pool.npz"), allow_pickle=True)
-SP = np.load(os.path.join(H, "global_species_proto.npz"), allow_pickle=True)
+ap = argparse.ArgumentParser()
+ap.add_argument("--pool", default=os.path.join(H, "global_pool.npz"))
+ap.add_argument("--proto", default=os.path.join(H, "global_species_proto.npz"))
+ARG = ap.parse_args()
+P = np.load(ARG.pool, allow_pickle=True)
+SP = np.load(ARG.proto, allow_pickle=True)
 EMB = P["emb"].astype(np.float32)                     # [N,768]
 SPI = P["species_idx"]; PORG = P["p_organ"]           # [N] , [N,4]
 CLS = list(P["classes"]); SPECIES = list(SP["species"]); PROTO = SP["proto"].astype(np.float32)
@@ -21,7 +25,6 @@ GENUS = np.array([s.split(" ")[0] for s in SPECIES])
 # quality → (0,1]：分辨率 + 清晰度各自 z-score，tanh 压到 (0,1)，取均值
 def z(x): x = np.log1p(np.maximum(x, 0)); return (x - x.mean()) / (x.std() + 1e-6)
 QUAL = 0.5 + 0.5 * np.tanh((z(P["q_res"]) + z(P["q_sharp"])) / 2)   # [N]
-COS_ALL = EMB @ PROTO.T                                # [N,S]  预算所有物种的 cos（池不大，能放下）
 
 rng = np.random.default_rng(0)
 # 查询物种：池里有 ≥3 张的
@@ -30,7 +33,7 @@ cand_sp = np.where(cnt >= 3)[0]
 q_sp = rng.choice(cand_sp, size=min(400, len(cand_sp)), replace=False)
 
 def score(si, pi, a, b, c):
-    cos = np.clip(COS_ALL[:, si], 1e-4, 1.0)
+    cos = np.clip(EMB @ PROTO[si], 1e-4, 1.0)          # 每 query 现算，2M 也就 ~1.5 GFLOP
     return cos**a * np.clip(PORG[:, pi], 1e-4, 1.0)**b * QUAL**c
 
 def eval_cfg(a, b, c, k=5):

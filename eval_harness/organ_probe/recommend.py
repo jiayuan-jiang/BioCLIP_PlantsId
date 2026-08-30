@@ -37,7 +37,10 @@ class Recommender:
         self.spi = P["species_idx"]
         self.p_organ = P["p_organ"]                               # [N,4]
         self.dhash = P["dhash"]                                   # [N,8] uint8
-        self.path = P["path"]
+        self.ref = P["path"] if "path" in P.files else P["url"]   # v0=本地文件名, v1=iNat URL
+        self.url = P["url"] if "url" in P.files else self.ref
+        self.license = P["license"] if "license" in P.files else np.array([""] * len(self.emb))
+        self.observer = P["observer_login"] if "observer_login" in P.files else np.array([""] * len(self.emb))
         self.classes = list(P["classes"])
         self.species = list(SP["species"])
         self.proto = SP["proto"].astype(np.float32)               # [S,768]
@@ -93,7 +96,9 @@ class Recommender:
                     prov = f"genus-relative ({sp_j})"
                 else:
                     prov = f"look-alike ({sp_j})"
-                res.append(dict(path=str(self.path[j]), species=sp_j, provenance=prov,
+                res.append(dict(ref=str(self.ref[j]), url=str(self.url[j]),
+                                license=str(self.license[j]), attribution=str(self.observer[j]),
+                                species=sp_j, provenance=prov,
                                 score=round(float(score[j]), 4), cos=round(float(cos[j]), 3),
                                 p_organ=round(float(self.p_organ[j, pi]), 3),
                                 quality=round(float(self.qual[j]), 3)))
@@ -127,7 +132,7 @@ def _visualize(rec, queries, outdir):
         res = rec.recommend(sp, parts=[part], per_part=6)[part]
         cards = []
         for r in res:
-            p = find(r["path"], r["species"])
+            p = find(r["ref"], r["species"])
             if not p:
                 continue
             im = Image.open(p).convert("RGB"); w = 380
@@ -154,9 +159,20 @@ def _visualize(rec, queries, outdir):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--visualize", action="store_true")
+    ap.add_argument("--pool", default=None)
+    ap.add_argument("--proto", default=None)
+    ap.add_argument("--species", default=None, help="单个物种 query（逗号分隔部位）")
+    ap.add_argument("--visualize", action="store_true", help="仅 v0 本地池：导出 contact sheet")
     args = ap.parse_args()
-    rec = Recommender()
+    rec = Recommender(pool_npz=args.pool, proto_npz=args.proto)
+    if args.species:
+        r = rec.recommend(args.species, per_part=6)
+        for part, lst in r.items():
+            print(f"\n=== {args.species} — {part} ===")
+            for i, x in enumerate(lst, 1):
+                print(f"  {i}. {x['species']:26} {x['provenance']:28} score={x['score']} "
+                      f"cos={x['cos']} p={x['p_organ']} q={x['quality']}  {x['url']}")
+        raise SystemExit
     demo = [("Acer rubrum", ["leaf", "bark"]), ("Asclepias syriaca", ["flower"]),
             ("Pinus strobus", ["bark"]), ("Quercus rubra", ["fruit"])]
     for sp, parts in demo:
