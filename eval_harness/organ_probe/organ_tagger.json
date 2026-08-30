@@ -1,0 +1,22 @@
+{
+  "leaf": {
+    "aucpr": 0.818,
+    "thr_f1": 0.575,
+    "thr_prec80": 0.951
+  },
+  "flower": {
+    "aucpr": 0.837,
+    "thr_f1": 0.565,
+    "thr_prec80": 0.879
+  },
+  "fruit": {
+    "aucpr": 0.884,
+    "thr_f1": 0.593,
+    "thr_prec80": 0.686
+  },
+  "bark": {
+    "aucpr": 0.605,
+    "thr_f1": 0.72,
+    "thr_prec80": 0.725
+  }
+}
