@@ -1,0 +1,22 @@
+{
+  "leaf": {
+    "thr_f1": 0.665,
+    "thr_prec80": 0.678
+  },
+  "flower": {
+    "thr_f1": 0.7,
+    "thr_prec80": 0.697
+  },
+  "fruit": {
+    "thr_f1": 0.623,
+    "thr_prec80": 0.607
+  },
+  "bark": {
+    "thr_f1": 0.658,
+    "thr_prec80": 0.298
+  },
+  "stem": {
+    "thr_f1": 0.625,
+    "thr_prec80": 0.6
+  }
+}

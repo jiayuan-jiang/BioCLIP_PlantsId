@@ -11,6 +11,7 @@ demo/
 ├── inference.py              # FastAPI 服务主文件
 ├── requirements.txt          # Python 依赖
 ├── CLAUDE.md                 # 本文件
+├── deploy-server.md          # 部署服务器信息（含地址，不入库；见 .gitignore）
 ├── bioclip_full_index.npz    # 全量物种向量索引（~1GB，需手动复制）
 ├── weights/                  # 模型权重（需手动复制）
 │   ├── open_clip_pytorch_model.bin
@@ -21,6 +22,12 @@ demo/
 ```
 
 > `bioclip_full_index.npz` 和 `weights/` 体积较大，不纳入 git，需在本机手动准备。
+
+---
+
+## 部署目标
+
+线上服务器地址、SSH 接入、运维待办见 **`deploy-server.md`**（未入库）。
 
 ---
 

@@ -16,12 +16,11 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# ── 权重（retrieval_eval.py sweep 定，global_pool 25000张/5000种）──
-#   a：cos 权重。1→2→3 每个指标单调上升，取上限 3。
-#   b：p_organ 权重。b=1 > 2 > 4（组织门控越重越伤物种保真度），取 1。
-#   c：quality 权重。c=0 保真度最高（rank1=S 0.26）；c=0.5 换来 swap:useful 0.57
-#      但 swap:genus 仅 0.15 —— quality 驱动的跨物种替换多半换成"更清晰但不同属"的照片。
-#      取 0.5 保留轻微清晰度微调，跨物种结果由 provenance 标注兜底。纯保真可设 0。
+# ── 权重 ──
+# ⚠️ 这套 raw 乘积形式已被 SCORE_ABLATION.md 证伪：任何 a/b/c 都救不回来
+#    （几何平均 1/1/1 rank1=S 0.04，调过的 3/1/.5 只 0.36，纯 cos³ 0.88）。
+#    暂定替代：score = softmax(cos / T=0.01) · p_organ[part]，quality 不进排序。
+#    形式与 T（生产 ~80 万种需重标）待定，代码尚未切换。见 SCORE_ABLATION.md。
 A, B, C = 3.0, 1.0, 0.5
 MMR_LAMBDA = 0.5        # 1=纯相关，0=纯多样
 DEDUP_HAMMING = 6       # dHash 汉明距离 ≤ 此值视为重复

@@ -1,0 +1,1001 @@
+class_idx,classname,n,recall
+0,tench,10,1.0000
+1,goldfish,10,1.0000
+2,great white shark,10,0.9000
+3,tiger shark,10,0.4000
+4,hammerhead,10,0.7000
+5,electric ray,10,0.9000
+6,stingray,10,0.8000
+7,cock,10,0.0000
+8,hen,10,0.9000
+9,ostrich,10,0.9000
+10,brambling,10,1.0000
+11,goldfinch,10,1.0000
+12,house finch,10,0.5000
+13,junco,10,1.0000
+14,indigo bunting,10,1.0000
+15,robin,10,0.8000
+16,bulbul,10,0.7000
+17,jay,10,1.0000
+18,magpie,10,0.7000
+19,chickadee,10,0.9000
+20,water ouzel,10,0.1000
+21,kite,10,0.9000
+22,bald eagle,10,1.0000
+23,vulture,10,0.5000
+24,great grey owl,10,1.0000
+25,European fire salamander,10,1.0000
+26,common newt,10,1.0000
+27,eft,10,0.0000
+28,spotted salamander,10,0.8000
+29,axolotl,10,0.9000
+30,bullfrog,10,0.8000
+31,tree frog,10,0.5000
+32,tailed frog,10,0.2000
+33,loggerhead,10,0.4000
+34,leatherback turtle,10,0.7000
+35,mud turtle,10,0.8000
+36,terrapin,10,0.7000
+37,box turtle,10,0.8000
+38,banded gecko,10,0.9000
+39,common iguana,10,0.4000
+40,American chameleon,10,0.1000
+41,whiptail,10,0.8000
+42,agama,10,1.0000
+43,frilled lizard,10,0.7000
+44,alligator lizard,10,0.7000
+45,Gila monster,10,0.9000
+46,green lizard,10,0.9000
+47,African chameleon,10,0.7000
+48,Komodo dragon,10,0.8000
+49,African crocodile,10,1.0000
+50,American alligator,10,1.0000
+51,triceratops,10,0.7000
+52,thunder snake,10,0.0000
+53,ringneck snake,10,1.0000
+54,hognose snake,10,0.6000
+55,green snake,10,0.1000
+56,king snake,10,0.5000
+57,garter snake,10,0.4000
+58,water snake,10,0.8000
+59,vine snake,10,1.0000
+60,night snake,10,0.5000
+61,boa constrictor,10,0.8000
+62,rock python,10,1.0000
+63,Indian cobra,10,0.8000
+64,green mamba,10,0.6000
+65,sea snake,10,1.0000
+66,horned viper,10,0.7000
+67,diamondback,10,0.1000
+68,sidewinder,10,0.7000
+69,trilobite,10,0.7000
+70,harvestman,10,1.0000
+71,scorpion,10,0.7000
+72,black and gold garden spider,10,0.0000
+73,barn spider,10,0.2000
+74,garden spider,10,0.2000
+75,black widow,10,1.0000
+76,tarantula,10,0.8000
+77,wolf spider,10,0.6000
+78,tick,10,0.8000
+79,centipede,10,0.6000
+80,black grouse,10,0.5000
+81,ptarmigan,10,1.0000
+82,ruffed grouse,10,0.7000
+83,prairie chicken,10,0.8000
+84,peacock,10,1.0000
+85,quail,10,0.6000
+86,partridge,10,0.9000
+87,African grey,10,0.6000
+88,macaw,10,1.0000
+89,sulphur-crested cockatoo,10,1.0000
+90,lorikeet,10,0.9000
+91,coucal,10,1.0000
+92,bee eater,10,0.9000
+93,hornbill,10,0.8000
+94,hummingbird,10,0.7000
+95,jacamar,10,0.9000
+96,toucan,10,0.6000
+97,drake,10,0.4000
+98,red-breasted merganser,10,0.9000
+99,goose,10,0.9000
+100,black swan,10,1.0000
+101,tusker,10,0.0000
+102,echidna,10,0.9000
+103,platypus,10,0.7000
+104,wallaby,10,0.8000
+105,koala,10,1.0000
+106,wombat,10,0.6000
+107,jellyfish,10,1.0000
+108,sea anemone,10,0.6000
+109,brain coral,10,0.7000
+110,flatworm,10,0.2000
+111,nematode,10,0.8000
+112,conch,10,0.6000
+113,snail,10,0.9000
+114,slug,10,0.8000
+115,sea slug,10,0.4000
+116,chiton,10,0.9000
+117,chambered nautilus,10,0.9000
+118,Dungeness crab,10,0.3000
+119,rock crab,10,0.4000
+120,fiddler crab,10,0.9000
+121,king crab,10,0.7000
+122,American lobster,10,1.0000
+123,spiny lobster,10,0.9000
+124,crayfish,10,0.4000
+125,hermit crab,10,0.8000
+126,isopod,10,0.5000
+127,white stork,10,1.0000
+128,black stork,10,1.0000
+129,spoonbill,10,0.8000
+130,flamingo,10,0.9000
+131,little blue heron,10,1.0000
+132,American egret,10,0.9000
+133,bittern,10,1.0000
+134,crane,10,0.3000
+135,limpkin,10,0.6000
+136,European gallinule,10,1.0000
+137,American coot,10,1.0000
+138,bustard,10,0.9000
+139,ruddy turnstone,10,1.0000
+140,red-backed sandpiper,10,1.0000
+141,redshank,10,0.7000
+142,dowitcher,10,0.9000
+143,oystercatcher,10,1.0000
+144,pelican,10,0.9000
+145,king penguin,10,1.0000
+146,albatross,10,1.0000
+147,grey whale,10,1.0000
+148,killer whale,10,0.8000
+149,dugong,10,0.8000
+150,sea lion,10,0.7000
+151,Chihuahua,10,0.5000
+152,Japanese spaniel,10,0.3000
+153,Maltese dog,10,0.4000
+154,Pekinese,10,0.4000
+155,Shih-Tzu,10,0.6000
+156,Blenheim spaniel,10,0.0000
+157,papillon,10,0.0000
+158,toy terrier,10,0.3000
+159,Rhodesian ridgeback,10,0.0000
+160,Afghan hound,10,0.2000
+161,basset,10,0.4000
+162,beagle,10,0.7000
+163,bloodhound,10,0.2000
+164,bluetick,10,0.0000
+165,black-and-tan coonhound,10,0.2000
+166,Walker hound,10,0.0000
+167,English foxhound,10,0.0000
+168,redbone,10,0.0000
+169,borzoi,10,0.6000
+170,Irish wolfhound,10,0.2000
+171,Italian greyhound,10,0.4000
+172,whippet,10,0.1000
+173,Ibizan hound,10,0.0000
+174,Norwegian elkhound,10,0.5000
+175,otterhound,10,0.2000
+176,Saluki,10,0.0000
+177,Scottish deerhound,10,0.3000
+178,Weimaraner,10,0.5000
+179,Staffordshire bullterrier,10,0.1000
+180,American Staffordshire terrier,10,0.3000
+181,Bedlington terrier,10,0.2000
+182,Border terrier,10,0.0000
+183,Kerry blue terrier,10,0.1000
+184,Irish terrier,10,0.2000
+185,Norfolk terrier,10,0.1000
+186,Norwich terrier,10,0.0000
+187,Yorkshire terrier,10,0.4000
+188,wire-haired fox terrier,10,0.1000
+189,Lakeland terrier,10,0.0000
+190,Sealyham terrier,10,0.0000
+191,Airedale,10,0.1000
+192,cairn,10,0.0000
+193,Australian terrier,10,0.0000
+194,Dandie Dinmont,10,0.0000
+195,Boston bull,10,0.0000
+196,miniature schnauzer,10,0.1000
+197,giant schnauzer,10,0.1000
+198,standard schnauzer,10,0.0000
+199,Scotch terrier,10,0.4000
+200,Tibetan terrier,10,0.1000
+201,silky terrier,10,0.4000
+202,soft-coated wheaten terrier,10,0.0000
+203,West Highland white terrier,10,0.2000
+204,Lhasa,10,0.1000
+205,flat-coated retriever,10,0.0000
+206,curly-coated retriever,10,0.5000
+207,golden retriever,10,0.3000
+208,Labrador retriever,10,0.6000
+209,Chesapeake Bay retriever,10,0.2000
+210,German short-haired pointer,10,0.0000
+211,vizsla,10,0.1000
+212,English setter,10,0.3000
+213,Irish setter,10,0.0000
+214,Gordon setter,10,0.1000
+215,Brittany spaniel,10,0.0000
+216,clumber,10,0.0000
+217,English springer,10,0.0000
+218,Welsh springer spaniel,10,0.8000
+219,cocker spaniel,10,0.2000
+220,Sussex spaniel,10,0.2000
+221,Irish water spaniel,10,0.2000
+222,kuvasz,10,0.0000
+223,schipperke,10,0.2000
+224,groenendael,10,0.0000
+225,malinois,10,0.4000
+226,briard,10,0.0000
+227,kelpie,10,0.0000
+228,komondor,10,0.2000
+229,Old English sheepdog,10,0.3000
+230,Shetland sheepdog,10,0.0000
+231,collie,10,0.4000
+232,Border collie,10,0.1000
+233,Bouvier des Flandres,10,0.0000
+234,Rottweiler,10,0.6000
+235,German shepherd,10,0.5000
+236,Doberman,10,0.2000
+237,miniature pinscher,10,0.1000
+238,Greater Swiss Mountain dog,10,0.7000
+239,Bernese mountain dog,10,0.5000
+240,Appenzeller,10,0.0000
+241,EntleBucher,10,0.0000
+242,boxer,10,0.4000
+243,bull mastiff,10,0.1000
+244,Tibetan mastiff,10,0.8000
+245,French bulldog,10,0.4000
+246,Great Dane,10,0.1000
+247,Saint Bernard,10,0.6000
+248,Eskimo dog,10,0.0000
+249,malamute,10,0.0000
+250,Siberian husky,10,0.6000
+251,dalmatian,10,0.9000
+252,affenpinscher,10,0.3000
+253,basenji,10,0.7000
+254,pug,10,0.0000
+255,Leonberg,10,0.0000
+256,Newfoundland,10,0.0000
+257,Great Pyrenees,10,0.3000
+258,Samoyed,10,0.2000
+259,Pomeranian,10,0.2000
+260,chow,10,0.2000
+261,keeshond,10,0.2000
+262,Brabancon griffon,10,0.0000
+263,Pembroke,10,0.0000
+264,Cardigan,10,0.0000
+265,toy poodle,10,0.0000
+266,miniature poodle,10,0.4000
+267,standard poodle,10,0.7000
+268,Mexican hairless,10,0.0000
+269,timber wolf,10,0.8000
+270,white wolf,10,0.7000
+271,red wolf,10,0.2000
+272,coyote,10,1.0000
+273,dingo,10,0.4000
+274,dhole,10,0.8000
+275,African hunting dog,10,0.6000
+276,hyena,10,1.0000
+277,red fox,10,1.0000
+278,kit fox,10,0.0000
+279,Arctic fox,10,0.8000
+280,grey fox,10,0.4000
+281,tabby,10,0.1000
+282,tiger cat,10,0.1000
+283,Persian cat,10,0.7000
+284,Siamese cat,10,0.8000
+285,Egyptian cat,10,0.1000
+286,cougar,10,0.7000
+287,lynx,10,1.0000
+288,leopard,10,0.9000
+289,snow leopard,10,1.0000
+290,jaguar,10,0.9000
+291,lion,10,1.0000
+292,tiger,10,1.0000
+293,cheetah,10,0.9000
+294,brown bear,10,1.0000
+295,American black bear,10,1.0000
+296,ice bear,10,0.9000
+297,sloth bear,10,1.0000
+298,mongoose,10,0.8000
+299,meerkat,10,0.9000
+300,tiger beetle,10,1.0000
+301,ladybug,10,0.9000
+302,ground beetle,10,0.8000
+303,long-horned beetle,10,0.7000
+304,leaf beetle,10,0.9000
+305,dung beetle,10,0.5000
+306,rhinoceros beetle,10,0.1000
+307,weevil,10,0.6000
+308,fly,10,0.7000
+309,bee,10,0.4000
+310,ant,10,1.0000
+311,grasshopper,10,0.7000
+312,cricket,10,0.4000
+313,walking stick,10,0.0000
+314,cockroach,10,0.7000
+315,mantis,10,0.8000
+316,cicada,10,1.0000
+317,leafhopper,10,1.0000
+318,lacewing,10,0.6000
+319,dragonfly,10,0.7000
+320,damselfly,10,0.8000
+321,admiral,10,0.9000
+322,ringlet,10,0.9000
+323,monarch,10,0.9000
+324,cabbage butterfly,10,0.6000
+325,sulphur butterfly,10,0.9000
+326,lycaenid,10,0.0000
+327,starfish,10,0.9000
+328,sea urchin,10,0.5000
+329,sea cucumber,10,0.4000
+330,wood rabbit,10,0.9000
+331,hare,10,0.7000
+332,Angora,10,0.1000
+333,hamster,10,0.8000
+334,porcupine,10,0.4000
+335,fox squirrel,10,0.8000
+336,marmot,10,0.8000
+337,beaver,10,0.8000
+338,guinea pig,10,0.9000
+339,sorrel,10,0.0000
+340,zebra,10,1.0000
+341,hog,10,0.8000
+342,wild boar,10,0.0000
+343,warthog,10,1.0000
+344,hippopotamus,10,0.9000
+345,ox,10,0.5000
+346,water buffalo,10,0.9000
+347,bison,10,1.0000
+348,ram,10,0.8000
+349,bighorn,10,0.9000
+350,ibex,10,1.0000
+351,hartebeest,10,0.9000
+352,impala,10,0.8000
+353,gazelle,10,0.4000
+354,Arabian camel,10,0.9000
+355,llama,10,0.9000
+356,weasel,10,0.4000
+357,mink,10,0.8000
+358,polecat,10,1.0000
+359,black-footed ferret,10,0.4000
+360,otter,10,0.8000
+361,skunk,10,0.7000
+362,badger,10,1.0000
+363,armadillo,10,1.0000
+364,three-toed sloth,10,1.0000
+365,orangutan,10,1.0000
+366,gorilla,10,0.9000
+367,chimpanzee,10,0.9000
+368,gibbon,10,1.0000
+369,siamang,10,0.1000
+370,guenon,10,0.6000
+371,patas,10,0.0000
+372,baboon,10,0.8000
+373,macaque,10,0.7000
+374,langur,10,0.7000
+375,colobus,10,0.8000
+376,proboscis monkey,10,0.9000
+377,marmoset,10,0.8000
+378,capuchin,10,0.9000
+379,howler monkey,10,0.5000
+380,titi,10,0.3000
+381,spider monkey,10,0.7000
+382,squirrel monkey,10,1.0000
+383,Madagascar cat,10,0.2000
+384,indri,10,1.0000
+385,Indian elephant,10,0.9000
+386,African elephant,10,1.0000
+387,lesser panda,10,0.7000
+388,giant panda,10,1.0000
+389,barracouta,10,0.0000
+390,eel,10,0.4000
+391,coho,10,0.8000
+392,rock beauty,10,1.0000
+393,anemone fish,10,0.7000
+394,sturgeon,10,0.8000
+395,gar,10,0.2000
+396,lionfish,10,1.0000
+397,puffer,10,0.8000
+398,abacus,10,0.7000
+399,abaya,10,0.0000
+400,academic gown,10,0.0000
+401,accordion,10,0.6000
+402,acoustic guitar,10,0.0000
+403,aircraft carrier,10,0.0000
+404,airliner,10,0.0000
+405,airship,10,0.2000
+406,altar,10,0.0000
+407,ambulance,10,0.2000
+408,amphibian,10,0.0000
+409,analog clock,10,0.0000
+410,apiary,10,0.6000
+411,apron,10,0.3000
+412,ashcan,10,0.1000
+413,assault rifle,10,0.0000
+414,backpack,10,0.0000
+415,bakery,10,0.0000
+416,balance beam,10,0.3000
+417,balloon,10,0.7000
+418,ballpoint,10,0.0000
+419,Band Aid,10,0.1000
+420,banjo,10,0.8000
+421,bannister,10,0.0000
+422,barbell,10,0.3000
+423,barber chair,10,0.1000
+424,barbershop,10,0.0000
+425,barn,10,0.1000
+426,barometer,10,0.2000
+427,barrel,10,0.5000
+428,barrow,10,0.0000
+429,baseball,10,0.1000
+430,basketball,10,0.3000
+431,bassinet,10,0.5000
+432,bassoon,10,0.0000
+433,bathing cap,10,0.0000
+434,bath towel,10,0.0000
+435,bathtub,10,0.0000
+436,beach wagon,10,0.0000
+437,beacon,10,0.0000
+438,beaker,10,0.3000
+439,bearskin,10,0.0000
+440,beer bottle,10,0.0000
+441,beer glass,10,0.0000
+442,bell cote,10,0.0000
+443,bib,10,0.2000
+444,bicycle-built-for-two,10,0.0000
+445,bikini,10,0.5000
+446,binder,10,0.4000
+447,binoculars,10,0.1000
+448,birdhouse,10,0.6000
+449,boathouse,10,0.0000
+450,bobsled,10,0.7000
+451,bolo tie,10,0.0000
+452,bonnet,10,0.0000
+453,bookcase,10,0.0000
+454,bookshop,10,0.0000
+455,bottlecap,10,0.2000
+456,bow,10,0.2000
+457,bow tie,10,0.0000
+458,brass,10,0.1000
+459,brassiere,10,0.0000
+460,breakwater,10,0.7000
+461,breastplate,10,0.1000
+462,broom,10,0.0000
+463,bucket,10,0.0000
+464,buckle,10,0.3000
+465,bulletproof vest,10,0.1000
+466,bullet train,10,0.7000
+467,butcher shop,10,0.0000
+468,cab,10,0.5000
+469,caldron,10,0.0000
+470,candle,10,0.2000
+471,cannon,10,0.4000
+472,canoe,10,0.2000
+473,can opener,10,0.2000
+474,cardigan,10,0.0000
+475,car mirror,10,0.0000
+476,carousel,10,1.0000
+477,carpenter's kit,10,0.0000
+478,carton,10,0.4000
+479,car wheel,10,0.0000
+480,cash machine,10,0.0000
+481,cassette,10,0.2000
+482,cassette player,10,0.0000
+483,castle,10,0.6000
+484,catamaran,10,0.0000
+485,CD player,10,0.0000
+486,cello,10,0.1000
+487,cellular telephone,10,0.0000
+488,chain,10,0.0000
+489,chainlink fence,10,0.2000
+490,chain mail,10,0.1000
+491,chain saw,10,0.2000
+492,chest,10,0.3000
+493,chiffonier,10,0.0000
+494,chime,10,0.1000
+495,china cabinet,10,0.1000
+496,Christmas stocking,10,0.2000
+497,church,10,0.0000
+498,cinema,10,0.0000
+499,cleaver,10,0.3000
+500,cliff dwelling,10,0.8000
+501,cloak,10,0.2000
+502,clog,10,0.2000
+503,cocktail shaker,10,0.2000
+504,coffee mug,10,0.0000
+505,coffeepot,10,0.2000
+506,coil,10,0.0000
+507,combination lock,10,0.0000
+508,computer keyboard,10,0.0000
+509,confectionery,10,0.0000
+510,container ship,10,0.1000
+511,convertible,10,0.1000
+512,corkscrew,10,0.0000
+513,cornet,10,0.5000
+514,cowboy boot,10,0.1000
+515,cowboy hat,10,0.0000
+516,cradle,10,0.1000
+517,crane,10,0.0000
+518,crash helmet,10,0.0000
+519,crate,10,0.0000
+520,crib,10,0.5000
+521,Crock Pot,10,0.0000
+522,croquet ball,10,0.2000
+523,crutch,10,0.0000
+524,cuirass,10,0.4000
+525,dam,10,0.0000
+526,desk,10,0.0000
+527,desktop computer,10,0.0000
+528,dial telephone,10,0.0000
+529,diaper,10,0.0000
+530,digital clock,10,0.0000
+531,digital watch,10,0.0000
+532,dining table,10,0.0000
+533,dishrag,10,0.1000
+534,dishwasher,10,0.1000
+535,disk brake,10,0.1000
+536,dock,10,0.0000
+537,dogsled,10,0.2000
+538,dome,10,0.8000
+539,doormat,10,0.1000
+540,drilling platform,10,0.0000
+541,drum,10,0.3000
+542,drumstick,10,0.0000
+543,dumbbell,10,0.1000
+544,Dutch oven,10,0.0000
+545,electric fan,10,0.3000
+546,electric guitar,10,0.0000
+547,electric locomotive,10,0.0000
+548,entertainment center,10,0.0000
+549,envelope,10,0.2000
+550,espresso maker,10,0.0000
+551,face powder,10,0.0000
+552,feather boa,10,0.0000
+553,file,10,0.0000
+554,fireboat,10,0.4000
+555,fire engine,10,0.5000
+556,fire screen,10,0.0000
+557,flagpole,10,0.2000
+558,flute,10,0.1000
+559,folding chair,10,0.0000
+560,football helmet,10,0.0000
+561,forklift,10,0.6000
+562,fountain,10,0.6000
+563,fountain pen,10,0.2000
+564,four-poster,10,0.1000
+565,freight car,10,0.0000
+566,French horn,10,0.1000
+567,frying pan,10,0.0000
+568,fur coat,10,0.3000
+569,garbage truck,10,0.0000
+570,gasmask,10,0.7000
+571,gas pump,10,0.0000
+572,goblet,10,0.1000
+573,go-kart,10,0.4000
+574,golf ball,10,0.1000
+575,golfcart,10,0.0000
+576,gondola,10,0.7000
+577,gong,10,0.3000
+578,gown,10,0.0000
+579,grand piano,10,0.3000
+580,greenhouse,10,0.1000
+581,grille,10,0.0000
+582,grocery store,10,0.0000
+583,guillotine,10,0.0000
+584,hair slide,10,0.0000
+585,hair spray,10,0.5000
+586,half track,10,0.0000
+587,hammer,10,0.6000
+588,hamper,10,0.1000
+589,hand blower,10,0.0000
+590,hand-held computer,10,0.0000
+591,handkerchief,10,0.3000
+592,hard disc,10,0.0000
+593,harmonica,10,0.1000
+594,harp,10,0.6000
+595,harvester,10,0.3000
+596,hatchet,10,0.0000
+597,holster,10,0.6000
+598,home theater,10,0.0000
+599,honeycomb,10,0.1000
+600,hook,10,0.0000
+601,hoopskirt,10,0.0000
+602,horizontal bar,10,0.0000
+603,horse cart,10,0.4000
+604,hourglass,10,0.6000
+605,iPod,10,0.1000
+606,iron,10,0.6000
+607,jack-o'-lantern,10,0.7000
+608,jean,10,0.2000
+609,jeep,10,0.3000
+610,jersey,10,0.0000
+611,jigsaw puzzle,10,0.3000
+612,jinrikisha,10,0.0000
+613,joystick,10,0.1000
+614,kimono,10,0.4000
+615,knee pad,10,0.0000
+616,knot,10,0.3000
+617,lab coat,10,0.1000
+618,ladle,10,0.0000
+619,lampshade,10,0.3000
+620,laptop,10,0.0000
+621,lawn mower,10,0.0000
+622,lens cap,10,0.1000
+623,letter opener,10,0.0000
+624,library,10,0.0000
+625,lifeboat,10,0.3000
+626,lighter,10,0.3000
+627,limousine,10,0.3000
+628,liner,10,0.3000
+629,lipstick,10,0.1000
+630,Loafer,10,0.1000
+631,lotion,10,0.1000
+632,loudspeaker,10,0.1000
+633,loupe,10,0.2000
+634,lumbermill,10,0.2000
+635,magnetic compass,10,0.3000
+636,mailbag,10,0.2000
+637,mailbox,10,0.1000
+638,maillot,10,0.0000
+639,maillot,10,0.0000
+640,manhole cover,10,0.2000
+641,maraca,10,0.1000
+642,marimba,10,0.3000
+643,mask,10,0.1000
+644,matchstick,10,0.2000
+645,maypole,10,0.1000
+646,maze,10,0.3000
+647,measuring cup,10,0.0000
+648,medicine chest,10,0.0000
+649,megalith,10,0.1000
+650,microphone,10,0.0000
+651,microwave,10,0.1000
+652,military uniform,10,0.0000
+653,milk can,10,0.3000
+654,minibus,10,0.2000
+655,miniskirt,10,0.0000
+656,minivan,10,0.0000
+657,missile,10,0.6000
+658,mitten,10,0.9000
+659,mixing bowl,10,0.2000
+660,mobile home,10,0.0000
+661,Model T,10,0.4000
+662,modem,10,0.6000
+663,monastery,10,0.0000
+664,monitor,10,0.1000
+665,moped,10,0.6000
+666,mortar,10,0.0000
+667,mortarboard,10,0.0000
+668,mosque,10,0.0000
+669,mosquito net,10,0.6000
+670,motor scooter,10,0.0000
+671,mountain bike,10,0.1000
+672,mountain tent,10,0.5000
+673,mouse,10,0.3000
+674,mousetrap,10,0.3000
+675,moving van,10,0.0000
+676,muzzle,10,0.0000
+677,nail,10,0.1000
+678,neck brace,10,0.2000
+679,necklace,10,0.0000
+680,nipple,10,0.1000
+681,notebook,10,0.0000
+682,obelisk,10,0.4000
+683,oboe,10,0.1000
+684,ocarina,10,0.1000
+685,odometer,10,0.9000
+686,oil filter,10,0.0000
+687,organ,10,0.5000
+688,oscilloscope,10,0.1000
+689,overskirt,10,0.3000
+690,oxcart,10,0.5000
+691,oxygen mask,10,0.3000
+692,packet,10,0.0000
+693,paddle,10,0.3000
+694,paddlewheel,10,0.4000
+695,padlock,10,0.4000
+696,paintbrush,10,0.0000
+697,pajama,10,0.0000
+698,palace,10,0.0000
+699,panpipe,10,0.0000
+700,paper towel,10,0.0000
+701,parachute,10,0.5000
+702,parallel bars,10,0.0000
+703,park bench,10,0.1000
+704,parking meter,10,0.0000
+705,passenger car,10,0.1000
+706,patio,10,0.0000
+707,pay-phone,10,0.2000
+708,pedestal,10,0.1000
+709,pencil box,10,0.0000
+710,pencil sharpener,10,0.0000
+711,perfume,10,0.3000
+712,Petri dish,10,0.1000
+713,photocopier,10,0.6000
+714,pick,10,0.1000
+715,pickelhaube,10,0.0000
+716,picket fence,10,0.2000
+717,pickup,10,0.0000
+718,pier,10,0.1000
+719,piggy bank,10,0.1000
+720,pill bottle,10,0.0000
+721,pillow,10,0.3000
+722,ping-pong ball,10,0.0000
+723,pinwheel,10,0.8000
+724,pirate,10,0.1000
+725,pitcher,10,0.1000
+726,plane,10,0.0000
+727,planetarium,10,0.0000
+728,plastic bag,10,0.2000
+729,plate rack,10,0.1000
+730,plow,10,0.1000
+731,plunger,10,0.0000
+732,Polaroid camera,10,0.0000
+733,pole,10,0.0000
+734,police van,10,0.0000
+735,poncho,10,0.2000
+736,pool table,10,0.4000
+737,pop bottle,10,0.0000
+738,pot,10,0.0000
+739,potter's wheel,10,0.4000
+740,power drill,10,0.0000
+741,prayer rug,10,0.1000
+742,printer,10,0.0000
+743,prison,10,0.0000
+744,projectile,10,0.0000
+745,projector,10,0.1000
+746,puck,10,0.6000
+747,punching bag,10,0.6000
+748,purse,10,0.0000
+749,quill,10,0.3000
+750,quilt,10,0.1000
+751,racer,10,0.2000
+752,racket,10,0.2000
+753,radiator,10,0.1000
+754,radio,10,0.0000
+755,radio telescope,10,0.3000
+756,rain barrel,10,0.1000
+757,recreational vehicle,10,0.0000
+758,reel,10,0.1000
+759,reflex camera,10,0.0000
+760,refrigerator,10,0.0000
+761,remote control,10,0.0000
+762,restaurant,10,0.0000
+763,revolver,10,0.5000
+764,rifle,10,0.3000
+765,rocking chair,10,0.1000
+766,rotisserie,10,0.5000
+767,rubber eraser,10,0.0000
+768,rugby ball,10,0.0000
+769,rule,10,0.0000
+770,running shoe,10,0.4000
+771,safe,10,0.1000
+772,safety pin,10,0.0000
+773,saltshaker,10,0.0000
+774,sandal,10,0.3000
+775,sarong,10,0.1000
+776,sax,10,0.9000
+777,scabbard,10,0.0000
+778,scale,10,0.2000
+779,school bus,10,0.1000
+780,schooner,10,0.3000
+781,scoreboard,10,0.0000
+782,screen,10,0.0000
+783,screw,10,0.2000
+784,screwdriver,10,0.2000
+785,seat belt,10,0.0000
+786,sewing machine,10,0.0000
+787,shield,10,0.0000
+788,shoe shop,10,0.0000
+789,shoji,10,0.6000
+790,shopping basket,10,0.0000
+791,shopping cart,10,0.1000
+792,shovel,10,0.0000
+793,shower cap,10,0.0000
+794,shower curtain,10,0.2000
+795,ski,10,0.7000
+796,ski mask,10,0.0000
+797,sleeping bag,10,0.1000
+798,slide rule,10,0.0000
+799,sliding door,10,0.0000
+800,slot,10,0.3000
+801,snorkel,10,0.1000
+802,snowmobile,10,0.7000
+803,snowplow,10,0.1000
+804,soap dispenser,10,0.0000
+805,soccer ball,10,0.1000
+806,sock,10,0.5000
+807,solar dish,10,0.0000
+808,sombrero,10,0.4000
+809,soup bowl,10,0.0000
+810,space bar,10,0.0000
+811,space heater,10,0.1000
+812,space shuttle,10,0.7000
+813,spatula,10,0.0000
+814,speedboat,10,0.0000
+815,spider web,10,0.4000
+816,spindle,10,0.2000
+817,sports car,10,0.0000
+818,spotlight,10,0.0000
+819,stage,10,0.0000
+820,steam locomotive,10,0.0000
+821,steel arch bridge,10,0.2000
+822,steel drum,10,0.2000
+823,stethoscope,10,0.0000
+824,stole,10,0.2000
+825,stone wall,10,0.0000
+826,stopwatch,10,0.0000
+827,stove,10,0.0000
+828,strainer,10,0.1000
+829,streetcar,10,0.1000
+830,stretcher,10,0.2000
+831,studio couch,10,0.0000
+832,stupa,10,0.8000
+833,submarine,10,0.6000
+834,suit,10,0.0000
+835,sundial,10,0.1000
+836,sunglass,10,0.0000
+837,sunglasses,10,0.0000
+838,sunscreen,10,0.0000
+839,suspension bridge,10,0.1000
+840,swab,10,0.0000
+841,sweatshirt,10,0.0000
+842,swimming trunks,10,0.1000
+843,swing,10,0.6000
+844,switch,10,0.0000
+845,syringe,10,0.1000
+846,table lamp,10,0.0000
+847,tank,10,0.7000
+848,tape player,10,0.0000
+849,teapot,10,0.2000
+850,teddy,10,0.2000
+851,television,10,0.0000
+852,tennis ball,10,0.1000
+853,thatch,10,0.2000
+854,theater curtain,10,0.0000
+855,thimble,10,0.1000
+856,thresher,10,0.2000
+857,throne,10,0.2000
+858,tile roof,10,0.0000
+859,toaster,10,0.3000
+860,tobacco shop,10,0.0000
+861,toilet seat,10,0.0000
+862,torch,10,0.2000
+863,totem pole,10,0.7000
+864,tow truck,10,0.0000
+865,toyshop,10,0.0000
+866,tractor,10,0.3000
+867,trailer truck,10,0.0000
+868,tray,10,0.0000
+869,trench coat,10,0.2000
+870,tricycle,10,0.1000
+871,trimaran,10,0.4000
+872,tripod,10,0.5000
+873,triumphal arch,10,0.4000
+874,trolleybus,10,0.8000
+875,trombone,10,0.0000
+876,tub,10,0.0000
+877,turnstile,10,0.2000
+878,typewriter keyboard,10,0.0000
+879,umbrella,10,0.4000
+880,unicycle,10,0.1000
+881,upright,10,0.5000
+882,vacuum,10,0.6000
+883,vase,10,0.0000
+884,vault,10,0.0000
+885,velvet,10,0.1000
+886,vending machine,10,0.0000
+887,vestment,10,0.4000
+888,viaduct,10,0.1000
+889,violin,10,0.2000
+890,volleyball,10,0.4000
+891,waffle iron,10,0.2000
+892,wall clock,10,0.0000
+893,wallet,10,0.0000
+894,wardrobe,10,0.3000
+895,warplane,10,0.2000
+896,washbasin,10,0.4000
+897,washer,10,0.7000
+898,water bottle,10,0.0000
+899,water jug,10,0.2000
+900,water tower,10,0.2000
+901,whiskey jug,10,0.0000
+902,whistle,10,0.1000
+903,wig,10,0.6000
+904,window screen,10,0.1000
+905,window shade,10,0.1000
+906,Windsor tie,10,0.1000
+907,wine bottle,10,0.0000
+908,wing,10,0.5000
+909,wok,10,0.0000
+910,wooden spoon,10,0.2000
+911,wool,10,0.1000
+912,worm fence,10,0.0000
+913,wreck,10,0.0000
+914,yawl,10,0.0000
+915,yurt,10,0.0000
+916,web site,10,0.0000
+917,comic book,10,0.0000
+918,crossword puzzle,10,0.5000
+919,street sign,10,0.0000
+920,traffic light,10,0.0000
+921,book jacket,10,0.0000
+922,menu,10,0.0000
+923,plate,10,0.0000
+924,guacamole,10,0.3000
+925,consomme,10,0.1000
+926,hot pot,10,0.0000
+927,trifle,10,0.1000
+928,ice cream,10,0.2000
+929,ice lolly,10,0.4000
+930,French loaf,10,0.2000
+931,bagel,10,0.0000
+932,pretzel,10,0.1000
+933,cheeseburger,10,0.5000
+934,hotdog,10,0.8000
+935,mashed potato,10,0.1000
+936,head cabbage,10,0.6000
+937,broccoli,10,0.4000
+938,cauliflower,10,0.7000
+939,zucchini,10,0.7000
+940,spaghetti squash,10,0.1000
+941,acorn squash,10,0.2000
+942,butternut squash,10,0.1000
+943,cucumber,10,0.8000
+944,artichoke,10,0.7000
+945,bell pepper,10,1.0000
+946,cardoon,10,0.0000
+947,mushroom,10,0.2000
+948,Granny Smith,10,0.4000
+949,strawberry,10,0.6000
+950,orange,10,0.8000
+951,lemon,10,0.4000
+952,fig,10,0.5000
+953,pineapple,10,0.9000
+954,banana,10,0.5000
+955,jackfruit,10,0.8000
+956,custard apple,10,0.5000
+957,pomegranate,10,1.0000
+958,hay,10,0.8000
+959,carbonara,10,0.7000
+960,chocolate sauce,10,0.0000
+961,dough,10,0.0000
+962,meat loaf,10,0.1000
+963,pizza,10,0.5000
+964,potpie,10,0.4000
+965,burrito,10,0.2000
+966,red wine,10,0.5000
+967,espresso,10,0.9000
+968,cup,10,0.0000
+969,eggnog,10,0.5000
+970,alp,10,0.0000
+971,bubble,10,0.5000
+972,cliff,10,0.0000
+973,coral reef,10,0.8000
+974,geyser,10,1.0000
+975,lakeside,10,0.0000
+976,promontory,10,0.0000
+977,sandbar,10,0.5000
+978,seashore,10,0.0000
+979,valley,10,0.0000
+980,volcano,10,0.3000
+981,ballplayer,10,0.0000
+982,groom,10,0.0000
+983,scuba diver,10,0.0000
+984,rapeseed,10,0.4000
+985,daisy,10,1.0000
+986,yellow lady's slipper,10,1.0000
+987,corn,10,0.9000
+988,acorn,10,0.9000
+989,hip,10,0.0000
+990,buckeye,10,0.4000
+991,coral fungus,10,0.9000
+992,agaric,10,0.8000
+993,gyromitra,10,0.9000
+994,stinkhorn,10,0.4000
+995,earthstar,10,1.0000
+996,hen-of-the-woods,10,0.9000
+997,bolete,10,1.0000
+998,ear,10,0.0000
+999,toilet tissue,10,0.7000

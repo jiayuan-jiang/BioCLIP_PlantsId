@@ -14,5 +14,36 @@ data/bioclip_full_index.npz
 demo/bioclip_full_index.npz
 demo/weights/
 
+# 配图推荐部署产物（build_deploy_artifacts.py 生成，~3.7GB，不入库）
+demo/deploy_artifacts/
+
+# 部署服务器信息（含地址，不入库）
+demo/deploy-server.md
+
+# 本地知识笔记，不入库
+doc/
+
 # Test scripts
 model_test.py
+
+# 临时 demo（可删）
+/tmp/
+
+# 密钥 / 本地配置，不入库
+.env
+.mcp.json
+
+# Python cache
+__pycache__/
+*.pyc
+
+# 运行时日志 / 缓存
+demo/logs/
+eval_harness/.text_cache/
+*.log
+
+# 训练 run 产物（体积大，不入库）
+runs/
+
+# 训练用原始图片集（大，不入库；代码可重新拉取/整理）
+eval_harness/organ_probe/stem_images_used/

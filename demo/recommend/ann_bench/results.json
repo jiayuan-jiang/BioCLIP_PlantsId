@@ -1,0 +1,368 @@
+{
+  "configs": [
+    {
+      "name": "HNSWFlat_M32",
+      "kind": "flat",
+      "M": 32,
+      "build_s": 28.3,
+      "pq_m": null,
+      "pq_nbits": null,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.04,
+          "recall@10": 0.9663,
+          "recall@100": 0.7237,
+          "recall@1000": 0.2343
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.05,
+          "recall@10": 0.987,
+          "recall@100": 0.8341,
+          "recall@1000": 0.3376
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.08,
+          "recall@10": 0.994,
+          "recall@100": 0.9144,
+          "recall@1000": 0.4841
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.16,
+          "recall@10": 0.9983,
+          "recall@100": 0.9621,
+          "recall@1000": 0.6487
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.29,
+          "recall@10": 0.999,
+          "recall@100": 0.9852,
+          "recall@1000": 0.8022
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 0.56,
+          "recall@10": 1.0,
+          "recall@100": 0.995,
+          "recall@1000": 0.9124
+        }
+      ]
+    },
+    {
+      "name": "HNSWPQ_M32_m96",
+      "kind": "pq",
+      "M": 32,
+      "build_s": 29.4,
+      "pq_m": 96,
+      "pq_nbits": 8,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.02,
+          "recall@10": 0.6497,
+          "recall@100": 0.6415,
+          "recall@1000": 0.2387
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.03,
+          "recall@10": 0.6553,
+          "recall@100": 0.6802,
+          "recall@1000": 0.3368
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.05,
+          "recall@10": 0.6553,
+          "recall@100": 0.6955,
+          "recall@1000": 0.4684
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.07,
+          "recall@10": 0.6553,
+          "recall@100": 0.7005,
+          "recall@1000": 0.5865
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.12,
+          "recall@10": 0.655,
+          "recall@100": 0.7017,
+          "recall@1000": 0.6516
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 0.22,
+          "recall@10": 0.6553,
+          "recall@100": 0.7021,
+          "recall@1000": 0.6769
+        }
+      ]
+    },
+    {
+      "name": "HNSWPQ_M32_m48",
+      "kind": "pq",
+      "M": 32,
+      "build_s": 107.0,
+      "pq_m": 48,
+      "pq_nbits": 8,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.03,
+          "recall@10": 0.4907,
+          "recall@100": 0.5464,
+          "recall@1000": 0.2421
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.02,
+          "recall@10": 0.5003,
+          "recall@100": 0.5649,
+          "recall@1000": 0.3353
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.03,
+          "recall@10": 0.5013,
+          "recall@100": 0.5665,
+          "recall@1000": 0.4447
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.06,
+          "recall@10": 0.499,
+          "recall@100": 0.5663,
+          "recall@1000": 0.5254
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.09,
+          "recall@10": 0.4997,
+          "recall@100": 0.5656,
+          "recall@1000": 0.5604
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 0.16,
+          "recall@10": 0.4993,
+          "recall@100": 0.565,
+          "recall@1000": 0.5714
+        }
+      ]
+    },
+    {
+      "name": "HNSWPQ_M32_m128",
+      "kind": "pq",
+      "M": 32,
+      "build_s": 36.9,
+      "pq_m": 128,
+      "pq_nbits": 8,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.03,
+          "recall@10": 0.71,
+          "recall@100": 0.6705,
+          "recall@1000": 0.2373
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.03,
+          "recall@10": 0.7203,
+          "recall@100": 0.7227,
+          "recall@1000": 0.3364
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.05,
+          "recall@10": 0.7243,
+          "recall@100": 0.747,
+          "recall@1000": 0.4759
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.08,
+          "recall@10": 0.7247,
+          "recall@100": 0.7565,
+          "recall@1000": 0.6129
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.14,
+          "recall@10": 0.7243,
+          "recall@100": 0.7594,
+          "recall@1000": 0.6971
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 0.24,
+          "recall@10": 0.7247,
+          "recall@100": 0.7601,
+          "recall@1000": 0.7324
+        }
+      ]
+    },
+    {
+      "name": "HNSWPQ_M32_m192",
+      "kind": "pq",
+      "M": 32,
+      "build_s": 50.8,
+      "pq_m": 192,
+      "pq_nbits": 8,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.03,
+          "recall@10": 0.7903,
+          "recall@100": 0.7056,
+          "recall@1000": 0.2348
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.04,
+          "recall@10": 0.7977,
+          "recall@100": 0.7782,
+          "recall@1000": 0.3353
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.07,
+          "recall@10": 0.8023,
+          "recall@100": 0.8197,
+          "recall@1000": 0.4777
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.11,
+          "recall@10": 0.8043,
+          "recall@100": 0.8378,
+          "recall@1000": 0.6368
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.2,
+          "recall@10": 0.8047,
+          "recall@100": 0.8447,
+          "recall@1000": 0.7562
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 0.38,
+          "recall@10": 0.805,
+          "recall@100": 0.847,
+          "recall@1000": 0.8142
+        }
+      ]
+    },
+    {
+      "name": "HNSWPQ_M32_m384",
+      "kind": "pq",
+      "M": 32,
+      "build_s": 104.7,
+      "pq_m": 384,
+      "pq_nbits": 8,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.05,
+          "recall@10": 0.906,
+          "recall@100": 0.7272,
+          "recall@1000": 0.237
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.07,
+          "recall@10": 0.9227,
+          "recall@100": 0.83,
+          "recall@1000": 0.3391
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.11,
+          "recall@10": 0.9273,
+          "recall@100": 0.9,
+          "recall@1000": 0.484
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.19,
+          "recall@10": 0.9287,
+          "recall@100": 0.9332,
+          "recall@1000": 0.6484
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.37,
+          "recall@10": 0.929,
+          "recall@100": 0.9458,
+          "recall@1000": 0.799
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 0.71,
+          "recall@10": 0.929,
+          "recall@100": 0.9504,
+          "recall@1000": 0.8995
+        }
+      ]
+    },
+    {
+      "name": "HNSWPQ_M32_m768",
+      "kind": "pq",
+      "M": 32,
+      "build_s": 312.1,
+      "pq_m": 768,
+      "pq_nbits": 8,
+      "sweeps": [
+        {
+          "ef_search": 16,
+          "latency_ms": 0.09,
+          "recall@10": 0.9523,
+          "recall@100": 0.7253,
+          "recall@1000": 0.2345
+        },
+        {
+          "ef_search": 32,
+          "latency_ms": 0.12,
+          "recall@10": 0.9687,
+          "recall@100": 0.8333,
+          "recall@1000": 0.3377
+        },
+        {
+          "ef_search": 64,
+          "latency_ms": 0.21,
+          "recall@10": 0.9747,
+          "recall@100": 0.9133,
+          "recall@1000": 0.484
+        },
+        {
+          "ef_search": 128,
+          "latency_ms": 0.37,
+          "recall@10": 0.9783,
+          "recall@100": 0.959,
+          "recall@1000": 0.6489
+        },
+        {
+          "ef_search": 256,
+          "latency_ms": 0.72,
+          "recall@10": 0.9793,
+          "recall@100": 0.9784,
+          "recall@1000": 0.8018
+        },
+        {
+          "ef_search": 512,
+          "latency_ms": 1.88,
+          "recall@10": 0.98,
+          "recall@100": 0.9851,
+          "recall@1000": 0.9118
+        }
+      ]
+    }
+  ]
+}

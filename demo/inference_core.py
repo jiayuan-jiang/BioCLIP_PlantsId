@@ -24,6 +24,8 @@ DEFAULT_TOPK    = 5
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 _WEIGHT_CANDIDATES = ["open_clip_pytorch_model.bin", "open_clip_model.safetensors"]
+GENUS_POOL      = 100   # 用于属置信度投票的近邻上限
+GENUS_SIM_FLOOR = 0.45  # 参与投票的最低相似度阈值
 
 # ── 全局资源（加载后填充）───────────────────────────────────────────
 _res: dict = {}
@@ -76,7 +78,7 @@ def load_resources() -> None:
     _res["index"]      = index
 
 
-def infer(img: Image.Image, topk: int) -> list[dict]:
+def infer(img: Image.Image, topk: int) -> dict:
     model      = _res["model"]
     preprocess = _res["preprocess"]
     index      = _res["index"]
@@ -87,11 +89,38 @@ def infer(img: Image.Image, topk: int) -> list[dict]:
         img_emb = img_emb / img_emb.norm(dim=-1, keepdim=True)
         img_emb = img_emb.cpu().float().numpy()[0]
 
-    sims    = index["embeddings"] @ img_emb
-    top_idx = np.argsort(sims)[::-1][:topk]
+    sims = index["embeddings"] @ img_emb
+    pool = max(topk, GENUS_POOL)
+    top_idx = np.argsort(sims)[::-1][:pool]
 
+    # ── 属置信度：top-GENUS_POOL 近邻投票（仅计入相似度 >= 阈值的条目）──
+    genus_counts: dict[str, int] = {}
+    genera_list = index.get("genera", [])
+    valid_pool = 0
+    for idx in top_idx[:GENUS_POOL]:
+        if sims[idx] < GENUS_SIM_FLOOR:
+            break  # top_idx 已按相似度降序，后面的都不满足
+        valid_pool += 1
+        g = genera_list[idx] if genera_list else None
+        g = _to_python(g)
+        if g and str(g) not in ("nan", "None", ""):
+            genus_counts[str(g)] = genus_counts.get(str(g), 0) + 1
+
+    if genus_counts and valid_pool > 0:
+        dom_genus = max(genus_counts, key=genus_counts.get)
+        dom_count = genus_counts[dom_genus]
+        genus_confidence = {
+            "genus":          dom_genus,
+            "confidence_pct": round(dom_count / valid_pool * 100, 1),
+            "count":          dom_count,
+            "out_of":         valid_pool,
+        }
+    else:
+        genus_confidence = None
+
+    # ── Top-K 结果 ────────────────────────────────────────────────────
     results = []
-    for rank, idx in enumerate(top_idx, start=1):
+    for rank, idx in enumerate(top_idx[:topk], start=1):
         sim     = float(sims[idx])
         sim_pct = round(sim * 100, 2)
         confidence = "high" if sim_pct >= 35 else ("medium" if sim_pct >= 22 else "low")
@@ -111,7 +140,7 @@ def infer(img: Image.Image, topk: int) -> list[dict]:
 
         results.append(entry)
 
-    return results
+    return {"genus_confidence": genus_confidence, "results": results}
 
 
 def _to_python(val):
