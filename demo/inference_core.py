@@ -11,6 +11,8 @@ from PIL import Image
 import torch
 import open_clip
 
+import gate
+
 logger = logging.getLogger("bioclip")
 
 # ── 路径 & 常量 ──────────────────────────────────────────────────────
@@ -73,9 +75,10 @@ def load_resources() -> None:
     model = model.to(DEVICE).eval()
     print(f"✓ 就绪  device={DEVICE}\n")
 
-    _res["model"]      = model
-    _res["preprocess"] = preprocess
-    _res["index"]      = index
+    _res["model"]       = model
+    _res["preprocess"]  = preprocess
+    _res["index"]       = index
+    _res["logit_scale"] = model.logit_scale.exp().item()
 
 
 def infer(img: Image.Image, topk: int) -> dict:
@@ -90,6 +93,9 @@ def infer(img: Image.Image, topk: int) -> dict:
         img_emb = img_emb.cpu().float().numpy()[0]
 
     sims = index["embeddings"] @ img_emb
+    energy = gate.energy_score(sims, _res["logit_scale"])
+    is_plant = gate.is_plant(energy)
+
     pool = max(topk, GENUS_POOL)
     top_idx = np.argsort(sims)[::-1][:pool]
 
@@ -140,7 +146,12 @@ def infer(img: Image.Image, topk: int) -> dict:
 
         results.append(entry)
 
-    return {"genus_confidence": genus_confidence, "results": results}
+    return {
+        "is_plant":     is_plant,
+        "energy_score": round(energy, 3),
+        "genus_confidence": genus_confidence,
+        "results": results,
+    }
 
 
 def _to_python(val):

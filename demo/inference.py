@@ -209,6 +209,8 @@ async def predict(
         top=[{"rank": r.get("rank"), "sci": r.get("sci_names"),
               "sim": r.get("similarity"), "conf": r.get("confidence")} for r in results[:5]],
         genus_conf=payload.get("genus_confidence"),
+        is_plant=payload.get("is_plant"),
+        energy_score=payload.get("energy_score"),
     )
     _alog(rec)
 
