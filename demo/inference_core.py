@@ -96,6 +96,14 @@ def infer(img: Image.Image, topk: int) -> dict:
     energy = gate.energy_score(sims, _res["logit_scale"])
     is_plant = gate.is_plant(energy)
 
+    if not is_plant:
+        return {
+            "is_plant":     False,
+            "energy_score": round(energy, 3),
+            "genus_confidence": None,
+            "results": [],
+        }
+
     pool = max(topk, GENUS_POOL)
     top_idx = np.argsort(sims)[::-1][:pool]
 

@@ -308,6 +308,13 @@ submitBtn.addEventListener('click', async () => {
 function showError(msg) { errorBox.textContent = `⚠ ${msg}`; errorBox.style.display = 'block'; }
 
 function renderResults(data) {
+  if (data.is_plant === false) {
+    resultsDiv.innerHTML = `<div style="background:#2a1520;border:1px solid #7f1d38;border-radius:10px;padding:14px 16px;color:#fca5a5;font-size:.9rem;">
+      ⚠ 未检测到植物特征，这张图片可能不是植物照片，暂不返回识别结果。
+      <div style="color:#6b7280;font-size:.75rem;margin-top:4px;">energy_score = ${data.energy_score}</div>
+    </div>`;
+    return;
+  }
   const results = data.results ?? data;
   const gc = data.genus_confidence ?? null;
   if (!results || results.length === 0) {
