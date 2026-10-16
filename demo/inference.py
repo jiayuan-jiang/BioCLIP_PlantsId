@@ -225,7 +225,7 @@ async def predict(
               "sim": r.get("similarity"), "conf": r.get("confidence")} for r in results[:5]],
         genus_conf=payload.get("genus_confidence"),
         is_plant=payload.get("is_plant"),
-        energy_score=payload.get("energy_score"),
+        energy_score=payload.get("energy_score"), probe_score=payload.get("probe_score"),
     )
     _alog(rec)
 
@@ -300,7 +300,7 @@ async def predict_multi(
     payload["failed"] = failed
     payload["per_image"] = [
         {"index": i, "filename": files[i].filename, "is_plant": s["is_plant"],
-         "energy_score": s["energy_score"], "top1": (s["results"][0] if s["results"] else None)}
+         "energy_score": s["energy_score"], "probe_score": s.get("probe_score"), "top1": (s["results"][0] if s["results"] else None)}
         for i, s in zip(used, singles)
     ]
     results = payload.get("results", [])
@@ -310,7 +310,7 @@ async def predict_multi(
         top=[{"rank": r.get("rank"), "sci": r.get("sci_names"),
               "sim": r.get("similarity"), "conf": r.get("confidence")} for r in results[:5]],
         genus_conf=payload.get("genus_confidence"), is_plant=payload.get("is_plant"),
-        energy_score=payload.get("energy_score"),
+        energy_score=payload.get("energy_score"), probe_score=payload.get("probe_score"),
     )
     _alog(rec)
     return Response(content=json.dumps(payload, ensure_ascii=False),

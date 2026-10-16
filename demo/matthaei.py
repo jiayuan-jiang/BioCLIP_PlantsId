@@ -3,7 +3,7 @@
 与 /predict 的区别：候选集不是 35 万物种，而是温室清单的 611 个物种（闭集塔 closed_v1.npz）。
   611 行全部是 BioCLIP 2 文字向量（用文字塔对 "a photo of {taxon_path}." 重新编码，见 data/bg_70）。
   其中 48 行在线上词表里向量全零，这里已修复；同一模态同一尺度，不需要校准。
-非植物 gate 仍用全量索引的 energy（与 /predict 同一阈值）。
+非植物 gate 与 /predict 相同（v3 线性头，同一阈值）；energy 仅作为 energy_score 返回。
 """
 import asyncio
 import io
@@ -41,9 +41,10 @@ def _classify(emb, topk: int) -> dict:
     if emb.energy is None:
         emb.energy = gate.energy_score(idx["embeddings"] @ e, _res["logit_scale"])
     energy = emb.energy
-    if not gate.is_plant(energy):
+    probe = gate.probe_score(e)
+    if not gate.is_plant_probe(probe):
         return {"edition": EDITION, "version": VERSION, "is_plant": False,
-                "energy_score": round(energy, 3), "results": []}
+                "energy_score": round(energy, 3), "probe_score": round(probe, 3), "results": []}
 
     s = _T["E"] @ e
     order = np.argsort(s)[::-1][:topk]
@@ -56,7 +57,7 @@ def _classify(emb, topk: int) -> dict:
         "score": round(float(s[i]), 5), "prob": round(float(p[i]), 5),
     } for r, i in enumerate(order, 1)]
     return {"edition": EDITION, "version": VERSION, "mode": "closed_set",
-            "is_plant": True, "energy_score": round(energy, 3),
+            "is_plant": True, "energy_score": round(energy, 3), "probe_score": round(probe, 3),
             "margin_top1_top2": None if margin is None else round(margin, 5),
             "results": results}
 

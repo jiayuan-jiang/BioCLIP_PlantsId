@@ -101,12 +101,14 @@ def infer_from_emb(img_emb, topk: int, emb=None) -> dict:
     energy = emb.energy if emb is not None and emb.energy is not None else gate.energy_score(sims, _res["logit_scale"])
     if emb is not None:
         emb.energy = energy
-    is_plant = gate.is_plant(energy)
+    probe = gate.probe_score(img_emb)
+    is_plant = gate.is_plant_probe(probe)
 
     if not is_plant:
         return {
             "is_plant":     False,
             "energy_score": round(energy, 3),
+            "probe_score":  round(probe, 3),
             "genus_confidence": None,
             "results": [],
         }
@@ -164,6 +166,7 @@ def infer_from_emb(img_emb, topk: int, emb=None) -> dict:
     return {
         "is_plant":     is_plant,
         "energy_score": round(energy, 3),
+        "probe_score":  round(probe, 3),
         "genus_confidence": genus_confidence,
         "results": results,
     }

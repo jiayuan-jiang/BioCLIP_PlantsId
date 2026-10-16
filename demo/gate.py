@@ -18,7 +18,15 @@ Detection"，NeurIPS 2020）。真实植物图会和某个具体物种的相似�
 
 后续（v1.1/v2）：负概念库 zero-shot 或独立训练的小模型专门补上截图这块短板，
 设计见本地 doc/ood-detection-notes.md + doc/demo-engineering-spec.md §B（不入库）。
+
+—— v3 更新（2026-10）：线上拦截改用二元线性头 ——
+`gate_head.npz` = eval_harness/gate_probe 的 v3 逻辑回归头（BioCLIP 2 图像向量 768→1，训练数据见该目录），
+阈值取「六类植物来源（iNat/Pl@ntNet/stem/Oxford 花/PlantVillage/SUN397 植物场景）各来源等权召回 99.5%」
+对应的折外分数分位（score ≥ 阈值 判植物）。该口径下在评测集上非植物误放率约 4.4%（precision@植物占50% ≈ 95.7%）。
+energy 仍然计算并随响应返回（energy_score），但不再参与判定。
 """
+
+from pathlib import Path
 
 import numpy as np
 
@@ -34,3 +42,19 @@ def energy_score(sims: np.ndarray, logit_scale: float) -> float:
 
 def is_plant(energy: float) -> bool:
     return energy >= THRESHOLD
+
+
+# ── v3 线性头（线上判定用）──────────────────────────────────────────
+_head = np.load(Path(__file__).parent / "gate_head.npz")
+_W = _head["w"].astype(np.float32)
+_B = float(_head["b"])
+PROBE_THRESHOLD = float(_head["threshold"])  # 六类来源等权召回 99.5%
+
+
+def probe_score(vec: np.ndarray) -> float:
+    """vec: L2 归一化的 768 维图像 embedding（与训练同源）。分数 = w·x + b，越大越像植物。"""
+    return float(vec @ _W + _B)
+
+
+def is_plant_probe(score: float) -> bool:
+    return score >= PROBE_THRESHOLD
