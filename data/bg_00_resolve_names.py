@@ -41,6 +41,7 @@ CSV_FULL = os.path.join(
 CACHE_FILE = "./bg_name_resolution_cache.json"
 
 GBIF_MATCH = "https://api.gbif.org/v1/species/match"
+GBIF_SPECIES = "https://api.gbif.org/v1/species"
 INAT_TAXA = "https://api.inaturalist.org/v1/taxa"
 
 HEADERS = {"User-Agent": "bg-name-resolver/1.0 (jiayuanj@umich.edu)"}
@@ -153,6 +154,18 @@ def gbif_match(name: str) -> dict:
         d = resp.json()
     except Exception as e:
         return {"gbif_error": str(e)}
+    accepted_key = d.get("acceptedUsageKey") or d.get("usageKey")
+    accepted_name = d.get("species") or d.get("canonicalName")
+    if d.get("acceptedUsageKey") and d.get("acceptedUsageKey") != d.get("usageKey"):
+        # 同物异名：再查一次 accepted usage 的 canonicalName
+        try:
+            r2 = requests.get(f"{GBIF_SPECIES}/{d['acceptedUsageKey']}",
+                              headers=HEADERS, timeout=20)
+            r2.raise_for_status()
+            j = r2.json()
+            accepted_name = j.get("species") or j.get("canonicalName") or accepted_name
+        except Exception:
+            pass
     return {
         "gbif_usage_key": d.get("usageKey"),
         "gbif_name": d.get("canonicalName") or d.get("scientificName"),
@@ -160,6 +173,8 @@ def gbif_match(name: str) -> dict:
         "gbif_status": d.get("status"),
         "gbif_match_type": d.get("matchType"),
         "gbif_confidence": d.get("confidence"),
+        "accepted_key": accepted_key,
+        "accepted_name": accepted_name,
         "family": d.get("family"),
         "genus": d.get("genus"),
     }
@@ -216,7 +231,7 @@ def resolve_one(clean_query: str, cache: dict) -> dict:
 
     out = {}
     out.update(gbif_match(clean_query))
-    out.update(inat_taxon(clean_query))
+    out.update(inat_taxon(out.get("accepted_name") or clean_query))
     time.sleep(REQUEST_DELAY)
 
     # 状态判定
@@ -307,12 +322,29 @@ def main():
     col_order = [
         "scope", "raw_name", "accession_count", "clean_query", "clean_note",
         "status", "gbif_name", "gbif_rank", "gbif_match_type", "gbif_confidence",
-        "gbif_status", "family", "genus", "gbif_usage_key",
+        "gbif_status", "accepted_name", "accepted_key", "family", "genus", "gbif_usage_key",
         "inat_taxon_id", "inat_name", "inat_rank", "inat_common", "inat_obs_count",
         "subzones",
     ]
     out_df = out_df[[c for c in col_order if c in out_df.columns]]
     out_df.to_csv(out_path, index=False, encoding="utf-8-sig")
+
+    # accepted species 汇总（bg_10 图片抓取的输入）：一行一个物种
+    sp = out_df[out_df["status"].str.startswith("ok") & (out_df["gbif_rank"] == "species")]
+    sp = (sp.dropna(subset=["accepted_name"])
+            .groupby("accepted_name")
+            .agg(accepted_key=("accepted_key", "first"),
+                 family=("family", "first"),
+                 inat_taxon_id=("inat_taxon_id", "first"),
+                 inat_common=("inat_common", "first"),
+                 accession_count=("accession_count", "sum"),
+                 raw_names=("raw_name", lambda x: " | ".join(sorted(set(x)))),
+                 subzones=("subzones", lambda x: "|".join(sorted(set(
+                     z for v in x for z in str(v).split("|") if z)))))
+            .reset_index())
+    sp_path = out_path.replace(".csv", "_accepted.csv")
+    sp.to_csv(sp_path, index=False, encoding="utf-8-sig")
+    print(f"✓ accepted species 汇总：{len(sp)} 个 → {sp_path}")
 
     # 摘要
     print(f"\n===== 解析摘要（{args.scope}）=====")
@@ -323,7 +355,7 @@ def main():
     print(f"\n解析到 accepted species（去重）：{n_species}")
     print(f"拿到 iNat taxon_id：{n_inat} / {len(out_df)}")
     print(f"\n输出：{os.path.abspath(out_path)}")
-    print("下一步：人工抽查 status=ok_fuzzy / genus_only / no_match 的行，再跑 bg_10_fetch_images.py")
+    print("下一步：人工抽查 status=ok_fuzzy / genus_only / no_match 的行，再跑 bg_10_fetch_images.py（输入 *_accepted.csv）")
 
 
 if __name__ == "__main__":
