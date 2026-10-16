@@ -47,3 +47,26 @@ runs/
 
 # 训练用原始图片集（大，不入库；代码可重新拉取/整理）
 eval_harness/organ_probe/stem_images_used/
+
+# 植物园实拍收集：密钥 + 上传数据
+demo/field_token.txt
+demo/field_data/
+
+# 远程算力池接入文档/脚本：含服务器地址与接入细节（仓库是 public，不入库）
+demo/ssh-pool/
+
+# 植物园评测：原图、WCVP 全量、大 embedding/预测明细不入库（脚本可重建，汇总结果入库）
+data/BotanicalGarden/gh_images/
+data/BotanicalGarden/wcvp/
+data/BotanicalGarden/gh_notext_emb/
+data/BotanicalGarden/gh_eval/chunks/
+data/BotanicalGarden/gh_eval/*.npy
+data/BotanicalGarden/gh_eval/*.npz
+data/BotanicalGarden/gh_eval/emb_files.csv
+data/BotanicalGarden/gh_eval/*predictions*.csv
+data/BotanicalGarden/gh_closed/*.npy
+
+# gate probe：缓存的 embedding 与中间分数（可由 embed*.py 重新生成）
+eval_harness/gate_probe/feats/
+eval_harness/gate_probe/feats2/
+eval_harness/gate_probe/*scores*.np[yz]
