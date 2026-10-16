@@ -30,7 +30,8 @@ from PIL import Image
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, Response
 
-from inference_core import BASE_DIR, DEFAULT_TOPK, DEVICE, _res, load_resources, infer
+from inference_core import BASE_DIR, DEFAULT_TOPK, DEVICE, _res, load_resources, infer, infer_from_emb
+from embed_node import node as embed_node, ImageDecodeError
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
 logger = logging.getLogger("bioclip")
@@ -139,6 +140,17 @@ app = FastAPI(
 )
 
 
+# 植物园实拍收集（限时 + 密钥路径；无 token 时不挂载）
+from fieldcollect import router as field_router, TOKEN as _FIELD_TOKEN
+if _FIELD_TOKEN:
+    app.include_router(field_router)
+
+
+# Matthaei 温室闭集特殊版本（/matthaei/*）
+from matthaei import make_router as _matthaei_router
+app.include_router(_matthaei_router(_alog, _client_ip))
+
+
 # ── 路由 ─────────────────────────────────────────────────────────────
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
@@ -155,6 +167,7 @@ async def health():
         "status": "ok",
         "device": DEVICE,
         "species_count": n,
+        "embed_node": embed_node.stats,
         "recommend": {
             "enabled": _reco_pool is not None,
             "workers": RECO_WORKERS if _reco_pool is not None else 0,
@@ -184,15 +197,17 @@ async def predict(
     data = await file.read()
     rec["bytes"] = len(data)
     try:
-        img = Image.open(io.BytesIO(data)).convert("RGB")
-    except Exception as e:
+        # 图像 embedding 走共享节点（去重 / 缓存 / 微批）；下游只做检索打分
+        emb, einfo = await embed_node.embed(data)
+        rec["embed"] = einfo
+    except ImageDecodeError as e:
         rec.update(status=400, error=str(e)[:200], latency_ms=round((time.perf_counter() - t0) * 1000, 1))
         _alog(rec)
-        raise HTTPException(status_code=400, detail=f"图片解析失败：{e}")
+        raise HTTPException(status_code=400, detail=str(e))
 
     try:
         loop = asyncio.get_running_loop()
-        payload = await loop.run_in_executor(None, infer, img, topk)  # ViT-L 前向丢线程池，不卡事件循环
+        payload = await loop.run_in_executor(None, infer_from_emb, emb.vec, topk, emb)
     except Exception as e:
         rec.update(status=500, error=str(e)[:300], latency_ms=round((time.perf_counter() - t0) * 1000, 1))
         _alog(rec)
@@ -219,6 +234,87 @@ async def predict(
         media_type="application/json",
         headers={"X-Request-Id": rid},
     )
+
+
+MULTI_MAX_FILES = 8
+
+
+@app.post("/predict/multi")
+async def predict_multi(
+    request: Request,
+    files: list[UploadFile] = File(..., description="同一株植物的多张图（叶/花/果/树皮…），1–8 张"),
+    topk: int = Query(default=DEFAULT_TOPK, ge=1, le=20, description="返回 Top-K 结果数"),
+):
+    """多图联合识别：各图 embedding 取均值（再 L2 归一）后检索，返回一份合并结果；
+    另附每张图单独的 top-1 供前端对照。解析失败的图跳过并在 `failed` 里列出，全失败才 400。"""
+    rid = uuid.uuid4().hex[:12]
+    t0 = time.perf_counter()
+    rec = {"endpoint": "predict_multi", "id": rid, "ip": _client_ip(request),
+           "ua": request.headers.get("user-agent", "")[:200], "topk": topk,
+           "n_files": len(files)}
+
+    def _fail(status: int, detail: str, **kw):
+        rec.update(status=status, error=detail[:300], latency_ms=round((time.perf_counter() - t0) * 1000, 1), **kw)
+        _alog(rec)
+        raise HTTPException(status_code=status, detail=detail)
+
+    if not _res:
+        _fail(503, "模型尚未就绪，请稍候")
+    if not 1 <= len(files) <= MULTI_MAX_FILES:
+        _fail(400, f"图片数量需在 1–{MULTI_MAX_FILES} 之间，收到 {len(files)}")
+
+    datas = [await f.read() for f in files]
+    rec["bytes"] = [len(d) for d in datas]
+    outs = await asyncio.gather(*(embed_node.embed(d) for d in datas), return_exceptions=True)
+
+    embs, used, failed = [], [], []
+    for i, (f, o) in enumerate(zip(files, outs)):
+        if isinstance(o, ImageDecodeError):
+            failed.append({"index": i, "filename": f.filename, "error": str(o)})
+        elif isinstance(o, Exception):
+            _fail(500, f"推理失败：{o}")
+        else:
+            embs.append(o[0])
+            used.append(i)
+    if not embs:
+        _fail(400, "所有图片解析失败：" + "; ".join(x["error"] for x in failed), failed=len(failed))
+
+    try:
+        import numpy as np
+        from embed_node import Emb
+        mean = np.mean([e.vec for e in embs], axis=0)
+        mean = (mean / np.linalg.norm(mean)).astype(np.float32)
+        loop = asyncio.get_running_loop()
+
+        def _run():
+            merged = infer_from_emb(mean, topk, Emb(mean))
+            singles = [infer_from_emb(e.vec, 1, e) for e in embs]
+            return merged, singles
+
+        payload, singles = await loop.run_in_executor(None, _run)
+    except Exception as e:
+        logger.error("多图推理异常", exc_info=True)
+        _fail(500, f"推理失败：{e}")
+
+    payload["n_images"] = len(embs)
+    payload["failed"] = failed
+    payload["per_image"] = [
+        {"index": i, "filename": files[i].filename, "is_plant": s["is_plant"],
+         "energy_score": s["energy_score"], "top1": (s["results"][0] if s["results"] else None)}
+        for i, s in zip(used, singles)
+    ]
+    results = payload.get("results", [])
+    rec.update(
+        status=200, latency_ms=round((time.perf_counter() - t0) * 1000, 1),
+        n_images=len(embs), n_failed=len(failed),
+        top=[{"rank": r.get("rank"), "sci": r.get("sci_names"),
+              "sim": r.get("similarity"), "conf": r.get("confidence")} for r in results[:5]],
+        genus_conf=payload.get("genus_confidence"), is_plant=payload.get("is_plant"),
+        energy_score=payload.get("energy_score"),
+    )
+    _alog(rec)
+    return Response(content=json.dumps(payload, ensure_ascii=False),
+                    media_type="application/json", headers={"X-Request-Id": rid})
 
 
 @app.get("/recommend/species")

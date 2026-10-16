@@ -81,19 +81,26 @@ def load_resources() -> None:
     _res["logit_scale"] = model.logit_scale.exp().item()
 
 
-def infer(img: Image.Image, topk: int) -> dict:
-    model      = _res["model"]
-    preprocess = _res["preprocess"]
-    index      = _res["index"]
-
-    tensor = preprocess(img).unsqueeze(0).to(DEVICE)
+def encode_image(img: Image.Image) -> np.ndarray:
+    """单张图 → L2 归一的 embedding（RunPod handler / 离线脚本用；FastAPI 走 embed_node 共享节点）。"""
+    tensor = _res["preprocess"](img).unsqueeze(0).to(DEVICE)
     with torch.no_grad():
-        img_emb = model.encode_image(tensor)
+        img_emb = _res["model"].encode_image(tensor)
         img_emb = img_emb / img_emb.norm(dim=-1, keepdim=True)
-        img_emb = img_emb.cpu().float().numpy()[0]
+    return img_emb.cpu().float().numpy()[0]
 
+
+def infer(img: Image.Image, topk: int) -> dict:
+    return infer_from_emb(encode_image(img), topk)
+
+
+def infer_from_emb(img_emb, topk: int, emb=None) -> dict:
+    """下游：公版物种识别。img_emb 是已算好的图像向量；emb 是 embed_node.Emb（可选，用来共享 energy）。"""
+    index = _res["index"]
     sims = index["embeddings"] @ img_emb
-    energy = gate.energy_score(sims, _res["logit_scale"])
+    energy = emb.energy if emb is not None and emb.energy is not None else gate.energy_score(sims, _res["logit_scale"])
+    if emb is not None:
+        emb.energy = energy
     is_plant = gate.is_plant(energy)
 
     if not is_plant:
