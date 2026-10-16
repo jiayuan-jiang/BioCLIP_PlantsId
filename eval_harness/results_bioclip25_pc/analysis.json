@@ -1,0 +1,206 @@
+{
+  "a": "bioclip2-pc",
+  "b": "bioclip25-pc",
+  "n_boot": 1000,
+  "seed": 0,
+  "benchmarks": {
+    "plantnet300k": {
+      "n_images": 31112,
+      "n_classes_present": 1081,
+      "top1_a": 0.6871303677037799,
+      "top1_b": 0.7034584726150681,
+      "diff": 0.01632810491128822,
+      "ci95_by_image": [
+        0.012437323219336544,
+        0.020121657238364624
+      ],
+      "ci95_by_species": [
+        0.0013923669584551186,
+        0.028830161219318636
+      ],
+      "long_tail": [
+        {
+          "group": "head",
+          "n_classes": 361,
+          "n_images": 29343,
+          "imgs_per_class_range": [
+            9,
+            902
+          ],
+          "top1_bioclip2-pc": 0.6963159867770848,
+          "top1_bioclip25-pc": 0.7112088061888696
+        },
+        {
+          "group": "mid",
+          "n_classes": 360,
+          "n_images": 1370,
+          "imgs_per_class_range": [
+            2,
+            9
+          ],
+          "top1_bioclip2-pc": 0.5313868613138686,
+          "top1_bioclip25-pc": 0.5773722627737227
+        },
+        {
+          "group": "tail",
+          "n_classes": 360,
+          "n_images": 399,
+          "imgs_per_class_range": [
+            1,
+            2
+          ],
+          "top1_bioclip2-pc": 0.5463659147869674,
+          "top1_bioclip25-pc": 0.5664160401002506
+        }
+      ]
+    },
+    "rare_species": {
+      "n_images": 11983,
+      "n_classes_present": 400,
+      "top1_a": 0.7832763081031461,
+      "top1_b": 0.8551280981390303,
+      "diff": 0.07185179003588427,
+      "ci95_by_image": [
+        0.06467495618793295,
+        0.0784444629892348
+      ],
+      "ci95_by_species": [
+        0.05736882265211118,
+        0.08570266501507812
+      ],
+      "long_tail": null
+    },
+    "imagenetv2": {
+      "n_images": 10000,
+      "n_classes_present": 1000,
+      "top1_a": 0.3478,
+      "top1_b": 0.442,
+      "diff": 0.0942,
+      "ci95_by_image": [
+        0.08479249999999999,
+        0.10320000000000001
+      ],
+      "ci95_by_species": [
+        0.08029999999999998,
+        0.10910250000000003
+      ],
+      "long_tail": null
+    }
+  },
+  "cost": [
+    {
+      "model_id": "bioclip2-pc",
+      "benchmark": "plantnet300k",
+      "n_images": 31112,
+      "n_classes": 1081,
+      "batch_size": 32,
+      "workers": 4,
+      "precision": "fp32",
+      "n_params": {
+        "total": 427616513,
+        "visual": 303966208
+      },
+      "text_s": 11.311,
+      "img_s": 4902.894,
+      "ms_per_img": 157.589,
+      "peak_text_mib": 1989,
+      "peak_img_mib": 2045,
+      "peak_reserved_mib": 2448
+    },
+    {
+      "model_id": "bioclip2-pc",
+      "benchmark": "rare_species",
+      "n_images": 11983,
+      "n_classes": 400,
+      "batch_size": 32,
+      "workers": 4,
+      "precision": "fp32",
+      "n_params": {
+        "total": 427616513,
+        "visual": 303966208
+      },
+      "text_s": 26.591,
+      "img_s": 2484.534,
+      "ms_per_img": 207.338,
+      "peak_text_mib": 1989,
+      "peak_img_mib": 2045,
+      "peak_reserved_mib": 2448
+    },
+    {
+      "model_id": "bioclip2-pc",
+      "benchmark": "imagenetv2",
+      "n_images": 10000,
+      "n_classes": 1000,
+      "batch_size": 32,
+      "workers": 4,
+      "precision": "fp32",
+      "n_params": {
+        "total": 427616513,
+        "visual": 303966208
+      },
+      "text_s": 121.852,
+      "img_s": 2073.04,
+      "ms_per_img": 207.304,
+      "peak_text_mib": 2248,
+      "peak_img_mib": 2045,
+      "peak_reserved_mib": 3162
+    },
+    {
+      "model_id": "bioclip25-pc",
+      "benchmark": "plantnet300k",
+      "n_images": 31112,
+      "n_classes": 1081,
+      "batch_size": 32,
+      "workers": 4,
+      "precision": "fp32",
+      "n_params": {
+        "total": 986109441,
+        "visual": 632076800
+      },
+      "text_s": 220.445,
+      "img_s": 12745.538,
+      "ms_per_img": 409.666,
+      "peak_text_mib": 4298,
+      "peak_img_mib": 4335,
+      "peak_reserved_mib": 4892
+    },
+    {
+      "model_id": "bioclip25-pc",
+      "benchmark": "rare_species",
+      "n_images": 11983,
+      "n_classes": 400,
+      "batch_size": 32,
+      "workers": 4,
+      "precision": "fp32",
+      "n_params": {
+        "total": 986109441,
+        "visual": 632076800
+      },
+      "text_s": 93.366,
+      "img_s": 5131.974,
+      "ms_per_img": 428.271,
+      "peak_text_mib": 4298,
+      "peak_img_mib": 4335,
+      "peak_reserved_mib": 4892
+    },
+    {
+      "model_id": "bioclip25-pc",
+      "benchmark": "imagenetv2",
+      "n_images": 10000,
+      "n_classes": 1000,
+      "batch_size": 32,
+      "workers": 4,
+      "precision": "fp32",
+      "n_params": {
+        "total": 986109441,
+        "visual": 632076800
+      },
+      "text_s": 495.4,
+      "img_s": 4255.456,
+      "ms_per_img": 425.546,
+      "peak_text_mib": 4645,
+      "peak_img_mib": 4335,
+      "peak_reserved_mib": 5090
+    }
+  ]
+}
