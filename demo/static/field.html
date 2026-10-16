@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex, nofollow">
+<title>植物园实拍</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--fg:#1c1c1e;--sub:#6c6c70;--line:#e5e5ea;--accent:#2e7d32;--warn:#d9480f;--bad:#c92a2a}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--card:#1c1c1e;--fg:#f2f2f7;--sub:#98989d;--line:#38383a;--accent:#66bb6a}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;
+  padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 24px)}
+main{max-width:560px;margin:0 auto;padding:12px 16px}
+h1{font-size:22px;margin:8px 0 2px}
+.sub{color:var(--sub);font-size:13px}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:12px 0}
+label.t{display:block;font-size:13px;color:var(--sub);margin:0 0 6px}
+select,input[type=text],textarea{width:100%;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);-webkit-appearance:none;appearance:none}
+textarea{min-height:64px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:9px 14px;border-radius:999px;font-size:15px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.pri::after{content:" ★";color:var(--warn)}.chip.on.pri::after{color:#fff}
+button.big{width:100%;padding:16px;font-size:18px;font-weight:600;border:0;border-radius:14px;background:var(--accent);color:#fff}
+button.big.alt{background:var(--bg);color:var(--fg);border:1px solid var(--line);font-weight:500;font-size:16px;padding:13px}
+button:disabled{opacity:.4}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.list{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:8px;display:none}
+.list div{padding:11px 12px;border-bottom:1px solid var(--line)}.list div:last-child{border:0}
+.list small{color:var(--sub);display:block}
+.cur{font-weight:600}.cur small{font-weight:400;color:var(--sub);display:block}
+.status{font-size:13px;color:var(--sub)}.ok{color:var(--accent)}.warnc{color:var(--warn)}.badc{color:var(--bad)}
+.hist div{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hist img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.hist .pred,.pred{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 2px;font-size:12px}
+.hist .pred>div,.pred>div{display:block;background:var(--bg);border-radius:8px;padding:6px 8px;min-width:0}
+.pred b{display:block;font-size:12px}.pred .bd{display:inline-block;padding:1px 6px;border-radius:6px;margin-right:4px;font-size:11px;color:#fff;background:var(--bad)}
+.pred .bd.y{background:var(--accent)}.pred .bd.n{background:#8e8e93}
+.pred ol{margin:4px 0 0;padding-left:16px}.pred li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pred li.m{color:var(--accent);font-weight:700}
+.hist .m{flex:1;min-width:0}.hist .m span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#banner{position:sticky;top:0;z-index:5;background:var(--warn);color:#fff;text-align:center;padding:8px;font-size:14px;display:none}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<main>
+  <h1>🌿 植物园实拍</h1>
+  <div class="sub" id="expire"></div>
+
+  <div class="card">
+    <label class="t">我是谁</label>
+    <select id="uploader"></select>
+  </div>
+
+  <div class="card">
+    <label class="t">这是哪种植物</label>
+    <div class="cur" id="cur">未选择</div>
+    <div class="row" style="margin-top:10px">
+      <button class="big alt" id="pick">从名单选</button>
+      <button class="big alt" id="manual">手动输入</button>
+    </div>
+    <input type="text" id="q" placeholder="搜学名 / 俗名" autocapitalize="off" autocorrect="off" style="display:none;margin-top:10px">
+    <button class="big alt" id="ok" style="display:none;margin-top:10px">确定</button>
+    <div class="chips" id="flt" style="display:none;margin-top:10px"></div>
+    <div class="list" id="list"></div>
+  </div>
+
+  <div class="card">
+    <label class="t">拍的是哪个部位（可选，选后保持，换植物自动清空）</label>
+    <div class="chips" id="organs"></div>
+    <label class="t" style="margin-top:12px">备注（可选）</label>
+    <textarea id="note" placeholder="如：标牌缺失 / 叶背孢子囊群 / 不确定是不是这种"></textarea>
+  </div>
+
+  <div class="card">
+    <button class="big" id="cam">📷 拍照</button>
+    <button class="big alt" id="alb" style="margin-top:10px">从相册选（可多选）</button>
+    <input type="file" id="fcam" accept="image/*" capture="environment" hidden>
+    <input type="file" id="falb" accept="image/*" multiple hidden>
+    <div class="status warnc" id="need"></div>
+    <div class="status" id="gps" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <label class="t">我已上传的照片（点开可修改 / 删除）<span id="minfo"></span></label>
+    <div class="hist" id="mine"></div>
+  </div>
+
+  <div class="card">
+    <label class="t">上传情况 <span id="qinfo"></span></label>
+    <div class="hist" id="hist"></div>
+  </div>
+</main>
+<div id="sheet" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10;overflow:auto;padding:env(safe-area-inset-top) 12px 24px">
+  <div class="card" style="max-width:560px;margin:24px auto">
+    <img id="eimg" style="width:100%;border-radius:10px;max-height:40vh;object-fit:contain;background:#000">
+    <div id="epred"></div>
+    <label class="t" style="margin-top:12px">物种</label><input type="text" id="esp" autocapitalize="off" autocorrect="off" list="spl">
+    <datalist id="spl"></datalist>
+    <label class="t" style="margin-top:12px">部位</label><div class="chips" id="eorg"></div>
+    <label class="t" style="margin-top:12px">备注</label><textarea id="enote"></textarea>
+    <div class="row" style="margin-top:14px"><button class="big alt" id="ecancel">取消</button><button class="big" id="esave">保存</button></div>
+    <button class="big alt" id="edel" style="margin-top:10px;color:var(--bad)">删除这张</button>
+  </div>
+</div>
+
+<script>
+const BASE = location.pathname.replace(/\/$/, '');
+const $ = id => document.getElementById(id);
+const ls = {get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+let cfg, cur = null, organ = '', fix = null;
+const hist = [];
+function predBox(title, p) {
+  if (!p) return `<div><b>${title}</b>预测中…</div>`;
+  if (p.status !== 200) return `<div><b>${title}</b><span class="bd">失败</span>${p.status || ''} ${(p.error || '').slice(0, 60)}</div>`;
+  if (p.is_plant === false) return `<div><b>${title}</b><span class="bd n">判为非植物</span></div>`;
+  const bd = (v, t) => `<span class="bd ${v ? 'y' : ''}">${t} ${v ? '✓' : '✗'}</span>`;
+  return `<div><b>${title} · ${Math.round(p.latency_ms)}ms</b>${bd(p.hit_top1, 'Top1')}${bd(p.hit_top5, 'Top5')}${p.genus_top1 ? '<span class="bd n">属对</span>' : ''}
+    <ol>${p.top5.map(x => `<li class="${x.match ? 'm' : ''}" title="${x.sci}">${x.sci}${x.score != null ? ' ' + (+x.score).toFixed(2) : ''}</li>`).join('')}</ol></div>`;
+}
+const predHTML = (o, c) => `<div class="pred">${predBox('公版 35万', o)}${predBox('温室 611', c)}</div>`;
+
+/* ---------- IndexedDB 队列（弱网/温室里没信号也不丢） ---------- */
+const dbp = new Promise((res, rej) => {
+  const r = indexedDB.open('field', 1);
+  r.onupgradeneeded = () => r.result.createObjectStore('q', {keyPath: 'client_id'});
+  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+});
+const tx = (mode, fn) => dbp.then(db => new Promise((res, rej) => {
+  const t = db.transaction('q', mode), s = t.objectStore('q'), r = fn(s);
+  t.oncomplete = () => res(r && r.result); t.onerror = () => rej(t.error);
+}));
+const qPut = it => tx('readwrite', s => s.put(it));
+const qDel = id => tx('readwrite', s => s.delete(id));
+const qAll = () => tx('readonly', s => s.getAll());
+
+/* ---------- 初始化 ---------- */
+(async () => {
+  cfg = await (await fetch(BASE + '/api/config')).json();
+  $('expire').textContent = '本页有效至 ' + new Date(cfg.expires_at).toLocaleString();
+  $('uploader').innerHTML = '<option value="">选择姓名…</option>' + cfg.uploaders.map(u => `<option>${u}</option>`).join('');
+  $('uploader').value = ls.get('uploader') || '';
+  $('uploader').onchange = () => { ls.set('uploader', $('uploader').value); refresh(); loadMine(); };
+  $('organs').innerHTML = cfg.organs.map(o => `<button class="chip" data-o="${o}">${o}</button>`).join('');
+  $('organs').onclick = e => { const b = e.target.closest('.chip'); if (!b) return;
+    organ = organ === b.dataset.o ? '' : b.dataset.o; renderOrgans(); };
+  const last = ls.get('species'); if (last) { try { setSpecies(JSON.parse(last)); } catch (e) {} }
+  startGPS(); refresh(); flush(); loadMine();
+})();
+
+const renderOrgans = () => document.querySelectorAll('#organs .chip').forEach(c => c.classList.toggle('on', c.dataset.o === organ));
+const ready = () => $('uploader').value && cur;
+function refresh() { $('need').textContent = !$('uploader').value ? '请先选择“我是谁”' : !cur ? '请先选择植物（选名单，或手动输入后点“确定”）' : ''; }
+function need() { refresh(); if ($('need').textContent) { alert($('need').textContent); return true; } return false; }
+
+/* ---------- 物种选择 ---------- */
+function setSpecies(s) {
+  cur = s; organ = ''; $('note').value = ''; renderOrgans();
+  ls.set('species', JSON.stringify(s));
+  $('cur').innerHTML = s.name + (s.manual ? ' <small>（手动输入）</small>' : `<small>${[s.common, s.houses && s.houses.join('/')].filter(Boolean).join(' · ')}${s.priority ? ' · ★优先 #' + s.rank : ''}${s.web_photos === 0 ? ' · 网上 0 张' : ''}</small>`);
+  $('list').style.display = 'none'; $('flt').style.display = 'none'; $('q').style.display = 'none'; $('ok').style.display = 'none'; $('q').value = '';
+  refresh();
+}
+let flt = 'pri';
+const FLT = [['pri', '★优先'], ['all', '全部'], ['Arid', 'Arid'], ['Temperate', 'Temperate'], ['Tropical', 'Tropical']];
+function showList(filter) {
+  const f = (filter || '').toLowerCase();
+  $('flt').style.display = 'flex';
+  $('flt').innerHTML = FLT.map(([k, t]) => `<button class="chip${k === flt ? ' on' : ''}" data-f="${k}">${t}</button>`).join('');
+  const ok = s => flt === 'all' || (flt === 'pri' ? s.priority : s.houses.includes(flt));
+  const items = cfg.species.filter(s => (f || ok(s)) && (!f || (s.name + ' ' + s.common + ' ' + (s.aliases || []).join(' ')).toLowerCase().includes(f)));
+  $('list').innerHTML = items.map(s => `<div data-i="${cfg.species.indexOf(s)}">${s.priority ? '★ ' : ''}<span class="status">#${s.rank}</span> ${s.name}<small>${[s.common, s.houses.join('/'), s.beds.length ? '床 ' + s.beds.join(',') : '床位未知，按标牌找', s.loc, s.reason].filter(Boolean).join(' · ')}</small></div>`).join('') || '<div>无匹配，可用“手动输入”</div>';
+  $('list').style.display = 'block';
+}
+$('flt').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; flt = b.dataset.f; showList($('q').value); };
+$('pick').onclick = () => { $('q').style.display = ''; $('q').placeholder = '搜学名 / 俗名'; $('q').dataset.mode = 'pick'; $('ok').style.display = 'none'; $('q').focus(); showList(''); };
+$('manual').onclick = () => { $('q').style.display = ''; $('q').placeholder = '输入学名，回车确认'; $('q').dataset.mode = 'manual'; $('ok').style.display = ''; $('list').style.display = 'none'; $('flt').style.display = 'none'; $('q').focus(); };
+$('q').oninput = () => { if ($('q').dataset.mode === 'pick') showList($('q').value); };
+const okManual = () => { const v = $('q').value.trim(); if ($('q').dataset.mode === 'manual' && v) { setSpecies({name: v, manual: true}); $('q').blur(); } };
+$('ok').onclick = okManual;
+$('q').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); okManual(); } };
+$('list').onclick = e => { const d = e.target.closest('[data-i]'); if (d) setSpecies({...cfg.species[+d.dataset.i], manual: false}); };
+
+/* ---------- GPS（iOS 在 http 下会被禁；失败时服务端回退读 EXIF） ---------- */
+function startGPS() {
+  const g = $('gps');
+  if (!navigator.geolocation || !isSecureContext) { g.innerHTML = '<span class="warnc">⚠ 当前不是 https，浏览器无法定位；相册选图时请在“选项”里开启“位置”，服务端会读照片里的 GPS</span>'; return; }
+  navigator.geolocation.watchPosition(p => {
+    fix = {lat: p.coords.latitude, lon: p.coords.longitude, acc: p.coords.accuracy, alt: p.coords.altitude, ts: p.timestamp};
+    g.innerHTML = `<span class="${p.coords.accuracy < 30 ? 'ok' : 'warnc'}">GPS ±${Math.round(p.coords.accuracy)} m</span>`;
+  }, err => { g.innerHTML = '<span class="badc">GPS 不可用：' + err.message + '（设置 → Safari → 位置）</span>'; },
+  {enableHighAccuracy: true, maximumAge: 15000, timeout: 30000});
+}
+
+/* ---------- 取图、必要时转 JPEG、入队 ---------- */
+async function toJpegIfNeeded(file) {
+  if (/^image\/(jpeg|png)$/.test(file.type)) return file;   // 保留 EXIF
+  try {   // HEIC/HEIF/WebP：Safari 能解码就画到 canvas 转 JPEG
+    const url = URL.createObjectURL(file), img = new Image(); img.src = url; await img.decode();
+    const k = Math.min(1, 4096 / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+    return await new Promise(r => c.toBlob(b => r(b || file), 'image/jpeg', 0.92));
+  } catch (e) { return file; }   // 交给服务端（pillow-heif）
+}
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12));
+async function addFiles(files) {
+  for (const f of files) {
+    const blob = await toJpegIfNeeded(f);
+    const it = {
+      client_id: uid(), blob, name: f.name || '',
+      uploader: $('uploader').value, species: cur.name, species_manual: cur.manual ? '1' : '0',
+      organ, note: $('note').value,
+      taken_ts: f.lastModified ? new Date(f.lastModified).toISOString() : new Date().toISOString(),
+      fix, added: Date.now()
+    };
+    it.buf = await blob.arrayBuffer(); it.type = blob.type || 'image/jpeg'; delete it.blob;
+    await qPut(it); hist.unshift({id: it.client_id, url: URL.createObjectURL(blob), label: `${it.species}${organ ? ' · ' + organ : ''}`, st: '排队'});
+  }
+  renderHist(); flush();
+}
+$('cam').onclick = () => { if (!need()) $('fcam').click(); };
+$('alb').onclick = () => { if (!need()) $('falb').click(); };
+for (const id of ['fcam', 'falb']) $(id).onchange = e => { const fs = [...e.target.files]; e.target.value = ''; if (fs.length) addFiles(fs); };
+
+/* ---------- 上传（串行，失败退避，恢复网络自动续传） ---------- */
+let busy = false, retry = 0;
+async function flush() {
+  if (busy) return; busy = true;
+  try {
+    for (const it of (await qAll()).filter(x => !x.rejected)) {
+      const h = hist.find(x => x.id === it.client_id); if (h) h.st = '上传中'; renderHist();
+      const fd = new FormData();
+      fd.append('file', new Blob([it.buf], {type: it.type}), 'photo.jpg');
+      for (const k of ['client_id', 'uploader', 'species', 'species_manual', 'organ', 'note', 'taken_ts']) fd.append(k, it[k] || '');
+      fd.append('client_name', it.name);
+      if (it.fix) { fd.append('lat', it.fix.lat); fd.append('lon', it.fix.lon); fd.append('gps_acc', it.fix.acc); fd.append('gps_alt', it.fix.alt ?? ''); fd.append('gps_ts', new Date(it.fix.ts).toISOString()); }
+      let r; try { r = await fetch(BASE + '/api/upload', {method: 'POST', body: fd}); } catch (e) { r = null; if (h) h.st = '待重试：' + e.message; }
+      if (r && r.ok) {
+        await qDel(it.client_id); retry = 0;
+        let j = {}; try { j = await r.json(); } catch (e) {}
+        if (h) { h.st = '✓ 已上传'; h.po = j.pred_open; h.pc = j.pred_closed; h.wall = j.wall_ms; }
+        loadMine();
+      }
+      else if (r && r.status >= 400 && r.status < 500 && r.status !== 408 && r.status !== 429) {
+        let d = ''; try { d = (await r.text()).slice(0, 160); } catch (e) {}
+        if (h) h.st = '✗ ' + r.status + ' ' + d;  // 服务端明确拒绝：留在队列但不卡后面
+        banner('有照片被服务器拒绝（' + r.status + '），请截图给我'); it.rejected = true; await qPut(it);
+      } else { if (h && !h.st.startsWith('待重试')) h.st = '待重试'; renderHist(); busy = false; retry++; setTimeout(flush, Math.min(30000, 2000 * retry)); return; }
+      renderHist();
+    }
+  } finally { busy = false; renderHist(); }
+}
+addEventListener('online', flush);
+function banner(t) { const b = $('banner'); b.textContent = t; b.style.display = t ? 'block' : 'none'; }
+async function renderHist() {
+  const pend = (await qAll()).filter(x => !x.rejected).length;
+  $('qinfo').textContent = pend ? `· ${pend} 张待传（别关页面）` : '· 全部已传';
+  banner(pend && !navigator.onLine ? '离线中：照片已存在手机里，有网后自动上传' : '');
+  $('hist').innerHTML = hist.slice(0, 20).map(h => `<div style="flex-wrap:wrap"><img src="${h.url}"><div class="m"><span>${h.label}</span><span class="${h.st[0] === '✓' ? 'ok' : h.st[0] === '✗' ? 'badc' : 'warnc'}">${h.st}${h.wall ? ' · 预测共 ' + Math.round(h.wall) + 'ms' : ''}</span></div>${h.po || h.pc ? `<div style="flex-basis:100%">${predHTML(h.po, h.pc)}</div>` : ''}</div>`).join('');
+}
+
+/* ---------- 我已上传的（可改/删） ---------- */
+let mineRows = [], eid = '', eorgan = '';
+function miniPred(r) {
+  const f = (t, p) => !p ? '' : p.status !== 200 ? `${t}失败 ` : p.is_plant === false ? `${t}非植物 ` : `${t}${p.hit_top1 ? '①' : p.hit_top5 ? '⑤' : '✗'} `;
+  return f('公', r.pred_open) + f('温', r.pred_closed);
+}
+async function loadMine() {
+  const u = $('uploader').value; if (!u) { $('mine').innerHTML = ''; $('minfo').textContent = ''; return; }
+  try {
+    mineRows = await (await fetch(BASE + '/api/mine?uploader=' + encodeURIComponent(u))).json();
+    $('minfo').textContent = ' · 共 ' + mineRows.length + ' 张';
+    $('mine').innerHTML = mineRows.map(r => `<div data-id="${r.id}"><img loading="lazy" src="${BASE}/api/thumb/${r.id}"><div class="m"><span>${r.species}${r.organ ? ' · ' + r.organ : ''}</span><span class="status">${miniPred(r)}${new Date(r.uploaded_at).toLocaleTimeString()}${r.note ? ' · ' + r.note : ''}${r.edited_at ? ' · 已改' : ''}</span></div></div>`).join('');
+  } catch (e) { $('minfo').textContent = ' · 读取失败'; }
+}
+$('mine').onclick = e => { const d = e.target.closest('[data-id]'); if (!d) return;
+  const r = mineRows.find(x => x.id === d.dataset.id); eid = r.id; eorgan = r.organ || '';
+  $('eimg').src = BASE + '/api/thumb/' + r.id; $('esp').value = r.species; $('enote').value = r.note || '';
+  $('spl').innerHTML = cfg.species.map(s => `<option value="${s.name}">`).join('');
+  $('epred').innerHTML = predHTML(r.pred_open, r.pred_closed); drawEorg(); $('sheet').style.display = 'block'; };
+const drawEorg = () => { $('eorg').innerHTML = cfg.organs.map(o => `<button class="chip${o === eorgan ? ' on' : ''}" data-o="${o}">${o}</button>`).join(''); };
+$('eorg').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; eorgan = eorgan === b.dataset.o ? '' : b.dataset.o; drawEorg(); };
+$('ecancel').onclick = () => $('sheet').style.display = 'none';
+$('esave').onclick = async () => {
+  const sp = $('esp').value.trim(); if (!sp) return alert('物种不能为空');
+  const fd = new FormData(); fd.append('uploader', $('uploader').value); fd.append('species', sp);
+  fd.append('species_manual', cfg.species.some(s => s.name === sp) ? '0' : '1');
+  fd.append('organ', eorgan); fd.append('note', $('enote').value);
+  const r = await fetch(BASE + '/api/edit/' + eid, {method: 'POST', body: fd}).catch(() => null);
+  if (r && r.ok) { $('sheet').style.display = 'none'; loadMine(); } else alert('保存失败，请重试');
+};
+$('edel').onclick = async () => {
+  if (!confirm('确定删除这张照片？')) return;
+  const fd = new FormData(); fd.append('uploader', $('uploader').value);
+  const r = await fetch(BASE + '/api/delete/' + eid, {method: 'POST', body: fd}).catch(() => null);
+  if (r && r.ok) { $('sheet').style.display = 'none'; loadMine(); } else alert('删除失败，请重试');
+};
+</script>
+</body>
+</html>
