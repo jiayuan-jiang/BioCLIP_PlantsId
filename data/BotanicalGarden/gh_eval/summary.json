@@ -1,0 +1,357 @@
+{
+ "overall_micro": {
+  "n_img": 26410,
+  "open_top1_strict": 0.3447557743279061,
+  "open_top1_len": 0.3479742521772056,
+  "open_top5_len": 0.5487315410829231,
+  "open_top20_len": 0.6798939795531995,
+  "open_genus_top1": 0.6288905717531238,
+  "closed_top1": 0.6689890193108671,
+  "closed_top5": 0.8344566452101476
+ },
+ "overall_macro_over_species": {
+  "open_top1_strict": 0.3104060866852827,
+  "open_top1_len": 0.3137931397513044,
+  "open_top5_len": 0.502502357731183,
+  "open_genus_top1": 0.6130577582442542,
+  "closed_top1": 0.6322824509734503,
+  "closed_top5": 0.8101579498389884
+ },
+ "n_species_evaluated": 602,
+ "vocab_coverage": {
+  "species_total": 614,
+  "in_vocab_strict": 611,
+  "in_vocab_lenient": 611
+ },
+ "in_vocab_only_micro": {
+  "n_img": 26409,
+  "open_top1_strict": 0.3447688288083608,
+  "open_top1_len": 0.3479874285281533,
+  "open_top5_len": 0.5487523192850922,
+  "open_top20_len": 0.6799197243364005,
+  "open_genus_top1": 0.6288765193683972,
+  "closed_top1": 0.6690143511681623,
+  "closed_top5": 0.834488242644553
+ },
+ "family_acc_known_only": {
+  "n_known": 26352,
+  "acc": 0.7436627200971463
+ },
+ "gate": {
+  "threshold": 68.537,
+  "pass_rate": 0.9939416887542597,
+  "rejected_true_plants": 160,
+  "acc_top1_len_if_gate_pass": 0.34994285714285717,
+  "acc_top1_len_if_gate_reject": 0.025
+ },
+ "by_source": {
+  "commons": {
+   "n_img": 8136,
+   "open_top1_strict": 0.30149950835791545,
+   "open_top1_len": 0.30432645034414946,
+   "open_top5_len": 0.5102015732546706,
+   "open_top20_len": 0.6504424778761062,
+   "open_genus_top1": 0.5979596853490659,
+   "closed_top1": 0.6506882989183874,
+   "closed_top5": 0.8230088495575221
+  },
+  "inat": {
+   "n_img": 14801,
+   "open_top1_strict": 0.3331531653266671,
+   "open_top1_len": 0.33713938247415715,
+   "open_top5_len": 0.5360448618336598,
+   "open_top20_len": 0.6687385987433282,
+   "open_genus_top1": 0.6210391189784474,
+   "closed_top1": 0.6487399500033781,
+   "closed_top5": 0.8285250996554286
+  },
+  "plantnet": {
+   "n_img": 3000,
+   "open_top1_strict": 0.5113333333333333,
+   "open_top1_len": 0.5123333333333333,
+   "open_top5_len": 0.703,
+   "open_top20_len": 0.8026666666666666,
+   "open_genus_top1": 0.738,
+   "closed_top1": 0.804,
+   "closed_top5": 0.886
+  },
+  "wikipedia": {
+   "n_img": 473,
+   "open_top1_strict": 0.3953488372093023,
+   "open_top1_len": 0.3953488372093023,
+   "open_top5_len": 0.6300211416490487,
+   "open_top20_len": 0.7568710359408034,
+   "open_genus_top1": 0.7145877378435518,
+   "closed_top1": 0.7610993657505285,
+   "closed_top5": 0.8900634249471459
+  }
+ },
+ "by_license_tier": {
+  "CC/PD": {
+   "n_img": 21989,
+   "open_top1_strict": 0.34667333666833416,
+   "open_top1_len": 0.34999317840738553,
+   "open_top5_len": 0.5500477511483014,
+   "open_top20_len": 0.6807039883578153,
+   "open_genus_top1": 0.6279503388057666,
+   "closed_top1": 0.6751102824139342,
+   "closed_top5": 0.8350084132975578
+  },
+  "all-rights-reserved": {
+   "n_img": 3947,
+   "open_top1_strict": 0.32784393210032936,
+   "open_top1_len": 0.33088421586014694,
+   "open_top5_len": 0.5315429440081074,
+   "open_top20_len": 0.6660755003800355,
+   "open_genus_top1": 0.6237648847225741,
+   "closed_top1": 0.6237648847225741,
+   "closed_top5": 0.8246769698505194
+  },
+  "unknown": {
+   "n_img": 474,
+   "open_top1_strict": 0.39662447257383965,
+   "open_top1_len": 0.39662447257383965,
+   "open_top5_len": 0.630801687763713,
+   "open_top20_len": 0.7573839662447257,
+   "open_genus_top1": 0.7151898734177216,
+   "closed_top1": 0.7616033755274262,
+   "closed_top5": 0.890295358649789
+  }
+ },
+ "longtail_by_accession_count": {
+  "1": {
+   "n_species": 468,
+   "open_top1_len": 0.3108427392923756,
+   "open_top5_len": 0.4986801352381036,
+   "closed_top1": 0.6406403927372549
+  },
+  "2": {
+   "n_species": 83,
+   "open_top1_len": 0.3473765662045779,
+   "open_top5_len": 0.5513937470269813,
+   "closed_top1": 0.6595073675857679
+  },
+  "3-5": {
+   "n_species": 43,
+   "open_top1_len": 0.2988698260105626,
+   "open_top5_len": 0.47188136808409653,
+   "closed_top1": 0.537222121751704
+  },
+  "6-10": {
+   "n_species": 6,
+   "open_top1_len": 0.2081481481481481,
+   "open_top5_len": 0.3477777777777778,
+   "closed_top1": 0.3679520697167756
+  },
+  ">10": {
+   "n_species": 2,
+   "open_top1_len": 0.24826086956521737,
+   "open_top5_len": 0.49043478260869566,
+   "closed_top1": 0.38347826086956527
+  }
+ },
+ "longtail_by_inat_obs": {
+  "0": {
+   "n_species": 6,
+   "open_top1_len": 0.07795918367346939,
+   "open_top5_len": 0.15918367346938775,
+   "closed_top1": 0.5739625850340137
+  },
+  "1-99": {
+   "n_species": 163,
+   "open_top1_len": 0.12518034553322183,
+   "open_top5_len": 0.2947921948024248,
+   "closed_top1": 0.46940345670061995
+  },
+  "100-999": {
+   "n_species": 150,
+   "open_top1_len": 0.28656814017003657,
+   "open_top5_len": 0.4920421180662625,
+   "closed_top1": 0.6353848692771383
+  },
+  "1k-9.9k": {
+   "n_species": 181,
+   "open_top1_len": 0.38610451966872555,
+   "open_top5_len": 0.5950562506874626,
+   "closed_top1": 0.7009960045778192
+  },
+  ">=10k": {
+   "n_species": 102,
+   "open_top1_len": 0.540795878635142,
+   "open_top5_len": 0.7057714752567693,
+   "closed_top1": 0.7695047971907442
+  }
+ },
+ "longtail_by_n_img": {
+  "<5": {
+   "n_species": 14,
+   "open_top1_len": 0.017857142857142856,
+   "open_top5_len": 0.08928571428571429,
+   "closed_top1": 0.35714285714285715
+  },
+  "5-9": {
+   "n_species": 22,
+   "open_top1_len": 0.010732323232323232,
+   "open_top5_len": 0.040945165945165944,
+   "closed_top1": 0.2337662337662338
+  },
+  "10-49": {
+   "n_species": 157,
+   "open_top1_len": 0.2509385924788161,
+   "open_top5_len": 0.4346218197667421,
+   "closed_top1": 0.5628737474086616
+  },
+  "50": {
+   "n_species": 409,
+   "open_top1_len": 0.3643520782396088,
+   "open_top5_len": 0.5675305623471882,
+   "closed_top1": 0.6897799511002445
+  }
+ },
+ "longtail_by_genus_vocab_size": {
+  "1-5": {
+   "n_species": 55,
+   "open_top1_len": 0.4169378198314368,
+   "open_top5_len": 0.5870153145307884,
+   "closed_top1": 0.6944527595997617
+  },
+  "6-20": {
+   "n_species": 79,
+   "open_top1_len": 0.4189559628315959,
+   "open_top5_len": 0.618017702181512,
+   "closed_top1": 0.7157323630415531
+  },
+  "21-100": {
+   "n_species": 199,
+   "open_top1_len": 0.25882615788297686,
+   "open_top5_len": 0.4463915978779053,
+   "closed_top1": 0.553537658254458
+  },
+  ">100": {
+   "n_species": 269,
+   "open_top1_len": 0.30248313590017756,
+   "open_top5_len": 0.49280762306667736,
+   "closed_top1": 0.6533170373052427
+  }
+ },
+ "top_families": [
+  {
+   "family": "Bromeliaceae",
+   "n_species": 63,
+   "open_top1_len": 0.2008,
+   "closed_top1": 0.4798
+  },
+  {
+   "family": "Cactaceae",
+   "n_species": 32,
+   "open_top1_len": 0.3553,
+   "closed_top1": 0.6882
+  },
+  {
+   "family": "Asparagaceae",
+   "n_species": 30,
+   "open_top1_len": 0.3559,
+   "closed_top1": 0.671
+  },
+  {
+   "family": "Araceae",
+   "n_species": 29,
+   "open_top1_len": 0.341,
+   "closed_top1": 0.6557
+  },
+  {
+   "family": "Apocynaceae",
+   "n_species": 28,
+   "open_top1_len": 0.4164,
+   "closed_top1": 0.6573
+  },
+  {
+   "family": "Orchidaceae",
+   "n_species": 26,
+   "open_top1_len": 0.2192,
+   "closed_top1": 0.7703
+  },
+  {
+   "family": "Euphorbiaceae",
+   "n_species": 17,
+   "open_top1_len": 0.2818,
+   "closed_top1": 0.5795
+  },
+  {
+   "family": "Acanthaceae",
+   "n_species": 17,
+   "open_top1_len": 0.4614,
+   "closed_top1": 0.8188
+  },
+  {
+   "family": "Polypodiaceae",
+   "n_species": 17,
+   "open_top1_len": 0.0,
+   "closed_top1": 0.0
+  },
+  {
+   "family": "Rubiaceae",
+   "n_species": 16,
+   "open_top1_len": 0.2952,
+   "closed_top1": 0.4697
+  },
+  {
+   "family": "Arecaceae",
+   "n_species": 14,
+   "open_top1_len": 0.3626,
+   "closed_top1": 0.6933
+  },
+  {
+   "family": "Asphodelaceae",
+   "n_species": 13,
+   "open_top1_len": 0.1018,
+   "closed_top1": 0.5674
+  },
+  {
+   "family": "Lamiaceae",
+   "n_species": 13,
+   "open_top1_len": 0.4898,
+   "closed_top1": 0.8839
+  },
+  {
+   "family": "Piperaceae",
+   "n_species": 12,
+   "open_top1_len": 0.1615,
+   "closed_top1": 0.5346
+  },
+  {
+   "family": "Malvaceae",
+   "n_species": 12,
+   "open_top1_len": 0.3291,
+   "closed_top1": 0.7079
+  }
+ ],
+ "calibration_by_top1_sim": {
+  "<0.22 (low)": {
+   "n_img": 0,
+   "open_top1_len": null
+  },
+  "0.22-0.35 (medium)": {
+   "n_img": 0,
+   "open_top1_len": null
+  },
+  ">=0.35 (high)": {
+   "n_img": 26410,
+   "open_top1_len": 0.3479742521772056
+  }
+ },
+ "rank_len_quantiles": {
+  "0.5": 4.0,
+  "0.75": 49.0,
+  "0.9": 3400.400000000005,
+  "0.95": 335885.0,
+  "0.99": 335885.0
+ },
+ "species_acc_distribution_open_top1_len": {
+  "=0": 126,
+  "(0,0.5)": 298,
+  "[0.5,0.9)": 169,
+  ">=0.9": 9
+ },
+ "wrong_top1_same_genus_share": 0.39581881533101043
+}

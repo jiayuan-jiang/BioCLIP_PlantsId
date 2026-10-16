@@ -1,0 +1,24 @@
+{
+ "n_img": 26410,
+ "n_species": 602,
+ "micro": {
+  "open_top1_before": 0.3479742521772056,
+  "open_top1_canon": 0.34835289663006436,
+  "open_top5_before": 0.5487315410829231,
+  "open_top5_canon": 0.5480121166224915,
+  "closed_top1_before": 0.6689890193108671,
+  "closed_top1_canon": 0.6681560015145778,
+  "closed_top5_before": 0.8344566452101476,
+  "closed_top5_canon": 0.8344566452101476
+ },
+ "gt_name_audit": {
+  "GBIF_accepted_not_in_WCVP": 4,
+  "GBIF_accepted_is_WCVP_synonym": 24,
+  "gt_names_disagree": 12
+ },
+ "species_changed_open": {
+  "up>=10pt": 2,
+  "up>=30pt": 1,
+  "down": 13
+ }
+}

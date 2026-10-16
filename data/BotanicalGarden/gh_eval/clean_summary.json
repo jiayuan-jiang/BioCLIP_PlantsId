@@ -1,0 +1,46 @@
+{
+ "n_img": 26410,
+ "judged_imgs(species n>=8)": 26294,
+ "flagged": 2099,
+ "flag_rate_among_judged": 0.07982809766486651,
+ "all": {
+  "n_img": 26410,
+  "open_top1": 0.34835289663006436,
+  "open_top5": 0.5480121166224915,
+  "closed_top1": 0.6681560015145778,
+  "closed_top5": 0.8344566452101476
+ },
+ "flagged_imgs": {
+  "n_img": 2099,
+  "open_top1": 0.09099571224392568,
+  "open_top5": 0.1824678418294426,
+  "closed_top1": 0.3301572177227251,
+  "closed_top5": 0.5483563601715102
+ },
+ "unflagged_judged": {
+  "n_img": 24195,
+  "open_top1": 0.3723083281669766,
+  "open_top5": 0.582062409588758,
+  "closed_top1": 0.699359371771027,
+  "closed_top5": 0.8605497003513123
+ },
+ "clean_set(unflagged, all)": {
+  "n_img": 24311,
+  "open_top1": 0.37057299164987045,
+  "open_top5": 0.5795730327835137,
+  "closed_top1": 0.6973386532845214,
+  "closed_top5": 0.8591584056599894
+ },
+ "by_source_flag_rate": {
+  "commons": 0.11108365253923143,
+  "inat": 0.07017782000814443,
+  "plantnet": 0.051666666666666666,
+  "wikipedia": 0.023554603854389723
+ },
+ "by_source_flagged_open_top1": {
+  "commons": 0.07341490545050056,
+  "inat": 0.09381044487427466,
+  "plantnet": 0.17419354838709677,
+  "wikipedia": 0.09090909090909091
+ }
+}
